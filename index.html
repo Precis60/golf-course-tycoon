@@ -69,7 +69,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 6px;t
 /* Modal / toast / confetti */
 .modalBack{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;place-items:center;z-index:80;padding:16px;backdrop-filter:blur(6px)}.modalBack.open{display:grid}
 .modal{width:min(640px,100%);max-height:88vh;overflow:auto;background:linear-gradient(180deg,#143824,#0a2114);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow);animation:pop .25s ease}@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
-.modal h2{color:var(--gold2)} .plRow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.14)} .plRow.total{font-weight:900;color:var(--gold2);font-size:17px}
+.modal h2{color:var(--gold2)}.modal .row{position:sticky;bottom:0;background:#10261a;padding:10px 0 6px;z-index:3;border-top:1px solid rgba(255,255,255,.08)} .plRow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.14)} .plRow.total{font-weight:900;color:var(--gold2);font-size:17px}
 #toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:100;display:grid;gap:8px;width:min(520px,92vw)}
 .toast{background:#102b1a;border:1px solid var(--gold);color:var(--ink);border-radius:14px;padding:13px 16px;box-shadow:var(--shadow);animation:fade .3s;font-weight:700;text-align:center}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
@@ -84,6 +84,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:18px;line-
 </style>
 </head>
 <body>
+<div id="jsFallback" role="status" style="max-width:760px;margin:18px auto;padding:16px 18px;border:1px solid #d4af37;border-radius:14px;background:#10261a;color:#f5f1df;font-family:system-ui,sans-serif;line-height:1.5;text-align:center">Loading Golf Course Tycoon&hellip;</div>
+<noscript><div style="max-width:760px;margin:18px auto;padding:16px 18px;border:1px solid #ff6b6b;border-radius:14px;background:#2a1010;color:#ffd7d7;font-family:system-ui,sans-serif;line-height:1.5;text-align:center"><strong>JavaScript is turned off.</strong> Golf Course Tycoon needs JavaScript to run &mdash; please enable it, or open this file in Chrome / Safari / Firefox (not a text or document preview), then reload.</div></noscript>
 <main class="wrap">
 <header class="hero">
   <div class="kicker">Premium Tycoon &middot; Design &middot; Manage &middot; Play</div>
@@ -294,8 +296,15 @@ const EVENTS=[
 /* ---------- 3. State, save / load ---------- */
 let S=null;
 function blankState(){ return {v:2,cash:750000,week:1,condition:82,reputation:55,satisfaction:62,members:120,loan:0,tiles:Array(N).fill("rough"),teeMap:{},greenMap:{},fee:65,maint:18000,marketing:6000,staff:6,tool:"fairway",holeNo:9,club:"driver",cashHist:[750000],lastProfit:0,weather:"Fine",seasonOver:false,round:null,muted:false}; }
-function save(){ try{ S.cashHist=S.cashHist.slice(-24); localStorage.setItem("golfTycoonV2",JSON.stringify(S)); $("saveNote").textContent="Autosaved "+new Date().toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})+" (Melbourne)"; }catch(e){} }
-function load(){ try{ const s=JSON.parse(localStorage.getItem("golfTycoonV2")||"null"); if(s&&s.v===2&&Array.isArray(s.tiles)&&s.tiles.length===N){ S=Object.assign(blankState(),s); return true; } }catch(e){} return false; }
+function save(){ try{ if(!Array.isArray(S.cashHist)) S.cashHist=[]; S.cashHist=S.cashHist.slice(-24); localStorage.setItem("golfTycoonV2",JSON.stringify(S)); $("saveNote").textContent="Autosaved "+new Date().toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})+" (Melbourne)"; }catch(e){} }
+function load(){ try{ const s=JSON.parse(localStorage.getItem("golfTycoonV2")||"null"); if(!s||s.v!==2||!Array.isArray(s.tiles)||s.tiles.length!==N) return false; const base=blankState(); const defaults=Object.assign({},base); S=Object.assign(base,s);
+ S.tiles=s.tiles.map(t=>(typeof t==="string"&&(TILE[t]||FACILITY[t]))?t:"rough");
+ const cleanMap=m=>{ const o={}; if(m&&typeof m==="object"&&!Array.isArray(m)) Object.keys(m).forEach(k=>{ const i=+k,v=+m[k]; if(Number.isInteger(i)&&i>=0&&i<N&&v>=1&&v<=9) o[i]=v; }); return o; };
+ S.teeMap=cleanMap(s.teeMap); S.greenMap=cleanMap(s.greenMap);
+ ["cash","week","condition","reputation","satisfaction","members","loan","fee","maint","marketing","staff","holeNo","lastProfit"].forEach(k=>{ const n=+S[k]; S[k]=Number.isFinite(n)?n:defaults[k]; });
+ S.cashHist=(Array.isArray(s.cashHist)?s.cashHist.filter(n=>Number.isFinite(+n)).map(Number):[]); if(!S.cashHist.length) S.cashHist=[S.cash];
+ if(!S.round||typeof S.round!=="object"||!Array.isArray(S.round.scores)||S.round.scores.length!==9) S.round=null;
+ if(typeof S.tool!=="string") S.tool="fairway"; if(typeof S.club!=="string") S.club="driver"; if(typeof S.weather!=="string") S.weather="Fine"; S.seasonOver=!!S.seasonOver; S.muted=!!S.muted; return true; }catch(e){ try{ localStorage.removeItem("golfTycoonV2"); }catch(_){} } return false; }
 /* ---------- 4. Course model, holes & scoring ---------- */
 const idx=(x,y)=>y*COLS+x, xy=i=>({x:i%COLS,y:Math.floor(i/COLS)});
 function tileAt(x,y){ if(x<0||y<0||x>=COLS||y>=ROWS) return "trees"; return S.tiles[idx(x,y)]; }
@@ -640,13 +649,16 @@ function bindUI(){
    if(e.target&&/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
    if(e.key==="1") switchTab("design"); if(e.key==="2") switchTab("manage"); if(e.key==="3") switchTab("play");
    if(e.key==="+"||e.key==="=") view.zoom=clamp(view.zoom*1.15,.55,3.2); if(e.key==="-") view.zoom=clamp(view.zoom/1.15,.55,3.2); if(e.key==="0"){view.x=0;view.y=0;view.zoom=1;} }); }
-(function init(){ const had=load(); if(!had){ S=blankState(); buildStarter(); } if(!S.round) S.round={scores:Array(9).fill(null),started:true};
+(function init(){ try{ const had=load(); if(!had){ S=blankState(); buildStarter(); } if(!S.round) S.round={scores:Array(9).fill(null),started:true};
  soundOn=!S.muted; $("soundBtn").textContent="Sound: "+(soundOn?"On":"Off"); $("soundBtn").setAttribute("aria-pressed",soundOn?"true":"false");
  displayedCash=S.cash; ensureRound(); buildTools(); bindDesignInput(); bindPlayInput(); bindUI();
+ document.querySelectorAll(".modalBack.open").forEach(m=>m.classList.remove("open"));
  $("holeSel").value=String(S.holeNo||9); refreshAll(); startHole(0); designRAF=requestAnimationFrame(designLoop);
- if(!had) setTimeout(()=>openModal("helpModal"),450);
+ if(!had) setTimeout(()=>toast("Welcome! Your starter course is ready to play \u2014 tap How to Play any time for a quick guide."),600);
  // Expose core sim for automated harness / debugging (no effect on gameplay)
- window.GCT={computeScores,simulateWeek,holePairs,validation,blankState,buildStarter,getState:()=>S,COLS,ROWS,FACILITY,TILE}; })();
+ window.GCT={computeScores,simulateWeek,holePairs,validation,blankState,buildStarter,getState:()=>S,COLS,ROWS,FACILITY,TILE};
+ const fb=$("jsFallback"); if(fb) fb.style.display="none";
+ }catch(err){ console.error("Golf Course Tycoon startup error:",err); try{ S=blankState(); buildStarter(); displayedCash=S.cash; ensureRound(); buildTools(); bindDesignInput(); bindPlayInput(); bindUI(); document.querySelectorAll(".modalBack.open").forEach(m=>m.classList.remove("open")); $("holeSel").value="9"; refreshAll(); startHole(0); designRAF=requestAnimationFrame(designLoop); const fb2=$("jsFallback"); if(fb2) fb2.style.display="none"; toast("Recovered from a saved-game problem \u2014 a fresh starter course has been loaded."); }catch(e2){ const fb3=$("jsFallback"); if(fb3){ fb3.style.display="block"; fb3.textContent="Golf Course Tycoon could not start ("+((err&&err.message)||err)+"). Please reload the page, and open this file in Chrome, Safari or Firefox rather than a text preview."; } } } })();
 </script>
 </body>
 </html>
