@@ -1,44 +1,51 @@
-# ⛳ Golf Course Tycoon
+# Golf Course Tycoon — v2 Premium
 
-A free, single-file browser game: design your own golf course, run it as a business, then play a round on it. No downloads, no sign-up, no build step — just open the HTML file in a browser.
+A free, single-file browser game: design a premium 9-hole golf course on canvas, run it as a business over a 12-week season, then play all nine holes you built. No downloads, no sign-up, no build step — just open the HTML file in a browser. Works offline after first load (no external CDNs, fonts, images or audio files).
 
-**Play it:** open `index.html` in any modern browser (phone, tablet, or computer), or host it online with GitHub Pages (see below) and share the link.
+**Play it:** open `index.html` in any modern browser (phone, tablet, or computer), or host it with GitHub Pages (below).
+
+## What's new in v2
+
+- **Canvas course rendering** — layered top-down course with mow-striped fairways/greens, rough texture, shaded sand, animated water shimmer, tree canopies with shadows, cart paths, tee boxes, waving flagsticks and ball trails. No emoji tiles.
+- **Dark-luxe UI** — glass panels, gold accents, sticky HUD with animated cash counter, progress meters, toasts, modal dialogs and confetti celebrations.
+- **Bigger design canvas** — 40 × 28 scrollable/zoomable grid (drag-paint, Pan tool, scroll/pinch zoom, Fit), mobile-first portrait layout with big touch targets, also responsive on desktop.
+- **Synthesised sound & haptics** — WebAudio clicks, thwack, splash, cash and cheer sounds (mute toggle, no audio files) plus `navigator.vibrate` feedback where available.
 
 ## How to play
 
-### 🎨 Design
-- Pick a tool (Fairway, Tee, Green, Sand, Water, Trees, Path, or Clear), then click tiles on the grid to build.
-- Each tile costs money, so watch your budget.
-- To open for business you need at least **1 tee, 6 fairway tiles, and 1 green**, and a **course rating of 55% or more**.
-- Sand, water, and trees raise your rating — a pretty, challenging course attracts more golfers.
+### 1) Design & Build
+- Pick a paint tool and drag on the canvas: **Tee, Fairway, Green, Rough, Sand, Water, Trees, Path**, plus **Bulldoze** and **Pan**.
+- **Tee / Green use the selected Hole No. (1–9).** Place Tee 1–9 and Green 1–9 to define nine real holes; par is derived from the actual tee-to-green distance (16 m per tile: Par 3 / 4 / 5).
+- **Facilities** (2×2 footprint, build cost + weekly upkeep + prestige/revenue effects): **Clubhouse, Pro Shop, Practice Range, Restaurant / Bar, Car Park, Maintenance Shed, Irrigation / Lake System**.
+- Budget is enforced on every tile/facility. A pre-built, editable **9-hole starter course** (Rating ~81, varied pars) is included.
+- Live **Course Rating, Beauty, Difficulty and Prestige** scores, a hole-by-hole overview table, and an **opening checklist** (clubhouse, 9 tees, 9 greens, 9 complete holes, range, shop/restaurant, car park, rating ≥ 55).
 
-### 📋 Manage
-- Set your **green fee**, **marketing spend**, and **ground staff**.
-- Click **Open for a day** to simulate a day of trading: visitor numbers depend on your course rating, reputation, price, marketing, and staff.
-- Too high a fee scares golfers away; too few staff hurts your reputation. Find the profitable balance and grow your money and star rating (up to ★★★★★).
+### 2) Manage & Hit Budgets
+- Start with **$750,000**. Season goal — finish **Week 12** with **Cash ≥ $850,000, Condition ≥ 70 and Reputation ≥ 65** for the Trophy screen. Go bankrupt (cash < $0) and the season ends early.
+- Sliders: **green fee, maintenance spend, marketing, grounds staff level**. Each **Advance Week** produces a modal **Weekly P&L** (green fees, memberships, Pro Shop & Restaurant income vs staff wages, per-tile mowing, facility upkeep, marketing, loan interest), a **cash-history sparkline chart** with target line, weather, and Condition / Reputation / Satisfaction meters that move in response.
+- **Random events:** storm damage, heatwave, tournament offer, vandalism, pro visit, wedding booking, junior clinic boom. Optional **$50k loan at 8%** weekly interest.
+- Progress **autosaves to localStorage**; New Game asks for confirmation first.
 
-### 🏌️ Play
-- Switch to Play to tee off on a hole sized from your own course design.
-- Choose a club — **Driver** (long, less accurate), **Iron** (medium), or **Putter** (short and accurate near the green).
-- Set your swing power and click **Swing**. Sink the ball in or under par to win prize money and boost your reputation.
-- Your progress is saved automatically in your browser (local storage), so you can close the tab and come back later.
+### 3) Play Your Course
+- Play **all 9 holes from your own design** — the play view renders your actual tee, green, fairways, sand, water, trees and paths around each hole.
+- **Drag to aim** (aim arrow), choose **Driver / 5-Iron / Wedge / Putter**, then **press-hold-release Swing**: the oscillating power/accuracy meter rewards releasing in the green/yellow zone.
+- Ball-flight animation with trail, bounce/roll feel and lie effects: **water = penalty + drop, sand 55% power, rough 75%, trees can deflect**, path 90%. On the green, putting uses a **break/slope indicator**. Hole-out animation, live 9-hole scorecard, and a final round summary — **prize money for a completed round is banked back into your Manage budget**.
 
-## Publish it on GitHub Pages (free hosting)
+Controls: tabs or keys `1/2/3`, `+`/`-` zoom, `0` fit, `Esc` closes dialogs. See the in-game **How to Play** guide.
 
-This game is one self-contained HTML file (`index.html` — all styles and code are inline, no other files or local paths needed), so it uploads as-is.
+## Publish on GitHub Pages (free hosting)
 
-1. Create a new repository on GitHub (for example `golf-course-tycoon`) under the **Precis60** account.
-2. Upload `index.html` to the repository (GitHub: **Add file → Upload files**, or `git add index.html && git commit && git push`).
-3. In the repository, go to **Settings → Pages**.
-4. Under **Build and deployment**, choose **Deploy from a branch**, select the `main` branch and `/ (root)`, then **Save**.
-5. Wait a minute or two — GitHub will show your live URL, usually:
-   `https://precis60.github.io/golf-course-tycoon/`
-6. Link to it from any website with a normal link, for example:
-   `<a href="https://precis60.github.io/golf-course-tycoon/">⛳ Play Golf Course Tycoon</a>`
+This game is one self-contained HTML file (`index.html` — all styles and code inline, no other files or local paths needed), so it uploads as-is.
 
-Anyone who clicks the link can play in their browser — nothing to install.
+1. Repository: `Precis60/golf-course-tycoon` (already created).
+2. Upload/commit `index.html` to the repo root (`git add index.html && git commit && git push`).
+3. Repo **Settings → Pages** → **Deploy from a branch**, `main` branch, `/ (root)`, **Save**.
+4. Live URL: `https://precis60.github.io/golf-course-tycoon/`
+5. Link it anywhere: `<a href="https://precis60.github.io/golf-course-tycoon/">Play Golf Course Tycoon</a>`
+
+Publish steps are unchanged from v1 — just re-push the new `index.html` (and this README).
 
 ## Files
 
-- `index.html` — the whole game (HTML, CSS, and JavaScript in one file)
+- `index.html` — the whole v2 game (HTML, CSS, JavaScript in one file, ~80 KB)
 - `README.md` — this file
