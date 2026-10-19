@@ -60,3 +60,27 @@ Publish steps are unchanged from v1 — just re-push the new `index.html` (and t
 - **Zoom as an editing tool:** 25%–450% zoom via mouse-wheel-to-cursor, two-finger pinch, +/− buttons and keyboard; Pan tool / two-finger pan; minimap overview with viewport rectangle (tap to jump); Fit Course and per-hole Zoom to Hole buttons; double-tap a hole badge to fly to that hole. Detail (50 m markers, landing arcs, bunker labels, green slope arrow) appears as you zoom in, and control points snap finer (0.25 tile) at high zoom.
 - **Play uses the geometry:** ball lie is tested against the actual corridor/green/bunker/water geometry of the hole being played — a straight drive on a dogleg can run through the bend into rough/trees, hazards are where you placed them, and green slope drives the putting break.
 - **Costs & saves:** re-routing a hole, applying a template, adding bunkers/water and reshaping greens all charge against cash. Saves bump to v3 under the same `golfTycoonV2` key; a v2 save loads without crashing (cash/season salvaged, holes rebuilt as the new starter) with a toast.
+
+## Hi-Res Rendering, Blank Start & 18 Holes (latest upgrade)
+
+**Honest resolution note:** Jamie asked for "200 times higher" quality. A literal 200× pixel count is not claimed — that would be ~176 million pixels for the design canvas alone and would not run on phones. What shipped is the maximum practical jump: geometry is **re-drawn as crisp vector paths at the current zoom every frame** (not a stretched bitmap), with a DPR-aware backing store (DPR capped at 3) plus supersampling.
+
+Measured before → after (headless Chrome, desktop DPR 1, Quality = Ultra):
+
+| Canvas | Before backing | After (Ultra) | Pixels before → after | Multiple |
+|---|---|---|---|---|
+| Design | 1120×784 | 4480×3136 | 878,080 → 14,049,280 | **16× pixels (4× linear)** |
+| Play | 980×560 | 3920×2240 | 548,800 → 8,780,800 | **16×** |
+| Yardage diagram | 760×340 | 3040×1360 | 258,400 → 4,134,400 | **16×** |
+| Cash chart | 520×150 | 2080×600 | 78,000 → 1,248,000 | **16×** |
+| Minimap | 260×182 | 1040×728 | 47,320 → 757,120 | **16×** |
+
+At 350–450% zoom the effective sharpness gain is larger than 16× versus the old stretched view, because detail (grass speckle/blades, green contours, bunker rake lines, shoreline/shimmer, tree tufts) is generated at the display transform scale and scales with zoom. Quality selector (top bar): **Ultra / High / Battery Saver** — Battery Saver drops the design backing to 840×588 for weak devices; on small screens (<520 px wide) density and supersampling are adaptively reduced. Still one self-contained HTML file, no external assets.
+
+**Blank start & 18 holes:**
+- **New Game** offers Starter 9, Starter 18, **Blank Course 9** and **Blank Course 18**. Blank is a completely empty site: no holes, no fairways, no facilities — just rough land, $750,000 intact. **Clear to Blank** in Design (with confirm) does the same without resetting cash/season.
+- World enlarged from 40×28 to **56×40 tiles** so 18 pro-length holes plus facilities/lakes genuinely fit. Hole selector and Stroke Index run 1–18, the yardage book, hole table and scorecard (with Front 9 / Back 9 / Total) cover all holes, and Play plays every completed hole.
+- Validation tiers: **Open (9 holes)** to trade/play, **Full 18 open** for a prestige bonus; visitors and prestige scale with completed holes. With 0 holes, Manage prompts you to design first and Play shows "Design at least 1 hole" with Swing disabled — no errors.
+- Existing 9-hole saves load unchanged in 9-hole mode (old 40×28 tile maps are padded onto the larger world; cash/season kept).
+
+Verified in headless Chrome (desktop 1280px + mobile 390×844, DPR 2): blank 18 = 0 holes / 0 errors; programmatic 18-hole build = 18 valid holes, scorecard shows holes 1–18 with Front/Back/Total and Hole 18 renders in Play; legacy template/drag/wheel-zoom/play tests still pass with 0 page errors. Rough render time on this box: ~3.4 ms per design frame, ~2.6 ms per play frame (20-frame average, Ultra, DPR 1).
