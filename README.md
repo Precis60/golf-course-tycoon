@@ -69,7 +69,7 @@ Measured before → after (headless Chrome, desktop DPR 1, Quality = Ultra):
 
 | Canvas | Before backing | After (Ultra) | Pixels before → after | Multiple |
 |---|---|---|---|---|
-| Design | 1120×784 | 4480×3136 | 878,080 → 14,049,280 | **16× pixels (4× linear)** |
+| Design | 1120×784 | 5600×4000 (Ultra) | 878,080 → 22,400,000 | **~25.5× pixels (100 px/tile world)** |
 | Play | 980×560 | 3920×2240 | 548,800 → 8,780,800 | **16×** |
 | Yardage diagram | 760×340 | 3040×1360 | 258,400 → 4,134,400 | **16×** |
 | Cash chart | 520×150 | 2080×600 | 78,000 → 1,248,000 | **16×** |
@@ -79,6 +79,8 @@ At 350–450% zoom the effective sharpness gain is larger than 16× versus the o
 
 **Blank start & 18 holes:**
 - **New Game** offers Starter 9, Starter 18, **Blank Course 9** and **Blank Course 18**. Blank is a completely empty site: no holes, no fairways, no facilities — just rough land, $750,000 intact. **Clear to Blank** in Design (with confirm) does the same without resetting cash/season.
+- **Building from blank (fixed):** every tool works on empty land. Painted Fairway now renders distinctly from Rough (lighter mow stripes, not the same colour). Placing **Tee n** shows a saved tee marker; placing the matching **Green n** then creates Hole n from those two points (drag its gold centreline points to shape it). On a hole that already exists, Tee/Green move that hole's tee/green point. Money is charged **only when a placement succeeds and renders**: occupied spots (facility, tee/green marker), a facility that does not fit a 2x2 inside the course, re-placing the same thing, and insufficient cash all charge $0 and show a toast saying why. Facilities are placed on tap/click only (dragging a facility or Tee/Green tool across tiles does not multi-charge), while drag-painting terrain charges once per newly changed tile and $0 over tiles already that type. Hole Designer actions (template, bends, bunkers, water, green shape, sliders) no longer silently create a hole — they ask for **+ Create Hole** first and charge $0 until a hole exists; a re-route that cannot be afforded is put back with no charge.
+- **Painted course size 5600 x 4000:** the design world is 56 x 40 tiles at a clean 100 px per tile (5600 x 4000 world pixels). On **Ultra** the design-canvas backing store is exactly **5600 x 4000** on desktop and phone; **High** scales the backing to 2800 x 2000 and **Battery Saver** to 1400 x 1000 while world coordinates, pointer hit-testing, minimap and Zoom to Hole still use the same 5600 x 4000 world (CSS display stays responsive/fit-to-screen with zoom/pan as before). Other canvases keep their previous hi-res treatment. Before this change the Ultra design backing was 4480 x 3136.
 - World enlarged from 40×28 to **56×40 tiles** so 18 pro-length holes plus facilities/lakes genuinely fit. Hole selector and Stroke Index run 1–18, the yardage book, hole table and scorecard (with Front 9 / Back 9 / Total) cover all holes, and Play plays every completed hole.
 - Validation tiers: **Open (9 holes)** to trade/play, **Full 18 open** for a prestige bonus; visitors and prestige scale with completed holes. With 0 holes, Manage prompts you to design first and Play shows "Design at least 1 hole" with Swing disabled — no errors.
 - Existing 9-hole saves load unchanged in 9-hole mode (old 40×28 tile maps are padded onto the larger world; cash/season kept).
