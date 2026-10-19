@@ -86,3 +86,37 @@ At 350–450% zoom the effective sharpness gain is larger than 16× versus the o
 - Existing 9-hole saves load unchanged in 9-hole mode (old 40×28 tile maps are padded onto the larger world; cash/season kept).
 
 Verified in headless Chrome (desktop 1280px + mobile 390×844, DPR 2): blank 18 = 0 holes / 0 errors; programmatic 18-hole build = 18 valid holes, scorecard shows holes 1–18 with Front/Back/Total and Hole 18 renders in Play; legacy template/drag/wheel-zoom/play tests still pass with 0 page errors. Rough render time on this box: ~3.4 ms per design frame, ~2.6 ms per play frame (20-frame average, Ultra, DPR 1).
+
+## Land Sizes, Brush & Object Sizes — PC upgrade (Oct 2026)
+
+**Land sizes (tile = 100 world units = 16 m; world scales as tiles × 100):**
+
+| Land | Tiles | World (units) | Backing store (Ultra/High/Battery) | Notes |
+|---|---|---|---|---|
+| Standard | 56×40 (2,240 tiles) | 5600×4000 | 5600×4000 / 2800×2000 / 1400×1000 | Original world, unchanged |
+| Large | 84×60 (5,040 tiles) | 8400×6000 | capped ≈5600×4000 / 2800×2000 / 1400×1000 | Suggested on PC-width screens; 18 holes fit comfortably |
+| Estate | 112×80 (8,960 tiles) | 11200×8000 | capped ≈5600×4000 / 2800×2000 / 1400×1000 | Spacious 18; backing is adaptively scaled, world coordinates stay logical |
+
+- Choose land at **New Game** (Land size selector) or **enlarge in Design**: Land Size selector + *Enlarge land* (two-click confirm). Enlarging pads rough around the existing course (top-left origin) and keeps every hole, tile and facility — indices are remapped, nothing is charged. Shrinking in place is refused (it would truncate content); use a New Game for a smaller site.
+- Existing saves load at their saved/inferred size (legacy 40×28 saves still migrate to Standard). Starter/template/created-hole placement uses the current `COLS`/`ROWS` (starter holes are spread across the land, keeping their lengths), so 18 holes fit on Large/Estate.
+- Zoom/pan/minimap/Fit/Zoom-to-Hole all use the current tile grid; the Quality selector still controls backing-store size/detail (see `GCT.hiResInfo()`).
+
+**Size panel (Design, collapsible — collapsed by default on narrow screens). Cost is always per NEW tile changed, shown live in the preview chip before you click; a brush that changes nothing (or that you can't afford as a whole) charges nothing and paints nothing — validate-then-charge, no multi-charge on re-drag.**
+
+| Control | Range / options | Cost basis |
+|---|---|---|
+| Brush (Fairway, Rough, Sand, Water, Trees, Path, Bulldoze) | Single / Round / Square, size **1–15 tiles** (`[` / `]` keys) | New tiles × tile cost (Fairway $900, Sand $1,600, Water $2,800, Trees $1,100, Path $700; Rough/Bulldoze free). Round 5 = 13 tiles; Square 5 = 25 tiles |
+| Tee | S 1 tile (1×1) / M 2 tiles (2×1) / L 4 tiles (2×2) | Tiles × $2,500 |
+| Green | Radius **8–24 m** slider (≈256–1,810 m², ~1–7 tiles); shape from Hole Designer (Round/Kidney/…) | Area-tiles × $4,200; *Apply resize* charges or refunds only the area difference |
+| Bunker (Hole Designer) | S r4 m / M r6 m / L r9 m | Base bunker cost ×1 / ×1.5 / ×2.5; sand painted with the brush stays brush-priced |
+| Trees | Single (1) / Copse (brush footprint) / Woodland (brush + outer ring) | Painted new tree tiles × $1,100 |
+| Facility | S 2×2 / M 3×3 / L 4×3 | Base cost ÷ 4 tiles × footprint tiles (S ×1, M ×2.25, L ×3) |
+| Water / Fairway | Brush size applies to painted water/fairway; per-hole Fairway **width slider (18–42 m)** in Hole Designer unchanged | As brush above |
+
+- Sizes are **remembered per tool** (brush per paint tool, footprint per facility) and persisted in the save (`sizes`), along with land size (`land`/`cols`/`rows`).
+- **Placed-object resizing:** pick the Tee/Green/Bunker size, then *Apply resize to selected* — growing charges the tile difference, shrinking refunds it, same size charges nothing (no negative-charge exploit: charge/refund are symmetric).
+- **Ghost preview:** hover shows the exact footprint on the canvas (overlay pass) plus a preview chip like `Fairway round 15 — 149 tiles — $134,100 (149 new)`; also exposed as `GCT.getGhost()`.
+
+**PC controls:** mouse hover ghost, **right-click erase** (context menu suppressed on canvas), **middle-mouse or Space-drag pan**, wheel-zoom to cursor, **`[` / `]`** brush size, **Alt+1…9** tool shortcuts (plain `1/2/3` still switch Design/Manage/Play — no conflict), **Esc** cancels a paint/drag. Touch tap/drag/pinch and the mobile layout still work with the same brush sizes.
+
+Validation (headless Chrome, real mouse/touch pointer events, Oct 2026): blank Large brush Round-5 fairway = 13 tiles charged once, Square-5 sand = 25, right-click erase, Tee L (4) vs S (1), Green 24 m→8 m resize refund, Tree single < copse < woodland, Facility L 12 tiles > S 4 with higher cost, enlarge Standard→Estate preserving a placed clubhouse, save/reload persisting land + sizes, Manage/Play unaffected, insufficient-cash brush painting/charging nothing, 0 page errors on desktop (1440×900) and mobile (390×844). Estate (112×80, starter 18) `drawDesign` averaged ≈38–46 ms/frame in headless Chrome. See `pc-size-screenshot.png`.
