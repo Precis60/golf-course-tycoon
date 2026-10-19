@@ -2,227 +2,651 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Golf Course Tycoon — design your course, manage the business, and play a round. Free browser game, no downloads.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Golf Course Tycoon — design a premium 9-hole course, manage the business over a 12-week season, and play your own holes. Free browser game.">
 <title>Golf Course Tycoon — Play Online</title>
 <style>
-:root{--bg:#0d2b1a;--panel:#143824;--panel2:#1b4a2f;--ink:#f2f7f0;--muted:#b7d3bf;--gold:#ffb020;--red:#ff6b6b;--line:rgba(255,255,255,.14);--fair:#59b368;--green:#2f9e57}
-*{box-sizing:border-box} html,body{margin:0;padding:0}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1100px 650px at 50% -10%,#2c7247 0%,var(--bg) 58%) fixed;color:var(--ink);min-height:100vh;padding:18px 14px 36px}
-.wrap{width:min(920px,100%);margin:0 auto}
-header{text-align:center} h1{margin:4px 0 6px;font-size:clamp(30px,6vw,48px)} .sub{color:var(--muted);margin:0 auto 14px;max-width:62ch;line-height:1.5}
-.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
-.stat{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:12px;padding:9px 6px;text-align:center}.stat b{display:block;font-size:19px}.stat span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-nav.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
-.tab{flex:1;min-width:110px;padding:12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-weight:800;cursor:pointer;font-size:15px}
-.tab[aria-selected="true"]{background:var(--gold);color:#231600;border-color:transparent}
-section.panel{display:none;background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:18px;padding:16px}
-section.panel.active{display:block} h2{margin:2px 0 8px} p,li{line-height:1.55;color:var(--muted)} strong{color:var(--ink)}
-.btn{appearance:none;border:0;cursor:pointer;border-radius:999px;padding:11px 18px;font-weight:800;font-size:15px;background:var(--gold);color:#231600}.btn.secondary{background:#e9f2ea;color:#173d29}.btn.ghost{background:var(--panel2);color:var(--ink);border:1px solid var(--line)}.btn:active{transform:translateY(1px)}
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tool{padding:9px 12px;border-radius:999px;border:1px solid var(--line);background:#0f3320;color:var(--ink);cursor:pointer;font-weight:700}.tool[aria-pressed="true"]{background:var(--gold);color:#231600}
-.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin:12px 0}
-.tile{aspect-ratio:1;border:0;border-radius:9px;font-size:clamp(15px,3.4vw,26px);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
-.tile.rough{background:#3d8b4f}.tile.fairway{background:var(--fair)}.tile.tee{background:#8bd49a}.tile.green{background:#27ae60;box-shadow:inset 0 0 0 3px rgba(255,255,255,.35)}.tile.sand{background:#ecd38a}.tile.water{background:#4db2e8}.tile.trees{background:#205c35}.tile.path{background:#b9a58c}
-label{display:block;margin:14px 0 6px;font-weight:700} input[type=range]{width:100%} output{color:var(--gold);font-weight:800}
-.log{background:#0a2114;border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-height:76px;white-space:pre-wrap;line-height:1.55;color:#dff0e2}
-.progress{height:22px;background:#0a2114;border:1px solid var(--line);border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#59b368,#ffb020);transition:width .35s}
-.meter{height:26px;background:#0a2114;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:8px 0}.power{height:100%;width:0;background:linear-gradient(90deg,#59b368,#ffb020,#ff5a5a)}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px} select{padding:11px;border-radius:10px;background:#0f3320;color:var(--ink);border:1px solid var(--line);font-size:15px}
-footer{text-align:center;color:var(--muted);font-size:13px;margin-top:16px}
-@media(max-width:560px){.hud{grid-template-columns:repeat(2,1fr)}}
+/* ============ GOLF COURSE TYCOON v2 — DARK LUXE UI ============ */
+:root{--bg:#071a10;--bg2:#0b2416;--panel:rgba(16,42,27,.86);--panel2:rgba(255,255,255,.06);--line:rgba(212,175,55,.28);--line2:rgba(255,255,255,.12);--ink:#f5f1df;--muted:#b9cdbd;--gold:#d4af37;--gold2:#f3d27a;--green:#57c96b;--fair:#6fbf5a;--red:#ff6b6b;--blue:#55b7e8;--radius:18px;--shadow:0 18px 50px rgba(0,0,0,.45)}
+*{box-sizing:border-box}html,body{margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);min-height:100vh;background:radial-gradient(1200px 700px at 20% -10%,#2e7d46 0%,transparent 55%),radial-gradient(900px 600px at 100% 0%,#8a6d1f33,transparent 50%),linear-gradient(180deg,var(--bg2),var(--bg) 55%,#041008);padding:14px 12px 90px}
+.wrap{width:min(1180px,100%);margin:0 auto}
+a{color:var(--gold2)}button,input,select{font:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+/* Header */
+.hero{text-align:center;padding:10px 8px 4px}.hero .kicker{letter-spacing:.34em;text-transform:uppercase;color:var(--gold);font-size:11px;font-weight:800}
+h1{margin:6px 0 6px;font-size:clamp(32px,6vw,58px);line-height:.98;letter-spacing:-.02em;background:linear-gradient(180deg,#fff8dc,#f3d27a 55%,#b98c1e);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 0 transparent}
+.sub{color:var(--muted);margin:0 auto;max-width:68ch;line-height:1.55;font-size:15px}
+.badge{display:inline-flex;gap:6px;align-items:center;margin-top:10px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(0,0,0,.25);color:var(--gold2);font-size:12px;font-weight:700}
+/* HUD */
+.hud{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:16px 0 10px;position:sticky;top:8px;z-index:30}
+.stat{background:linear-gradient(180deg,rgba(24,58,36,.94),rgba(9,28,17,.94));border:1px solid var(--line);border-radius:16px;padding:10px 6px;text-align:center;box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+.stat b{display:block;font-size:clamp(15px,2.6vw,21px);white-space:nowrap}.stat span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.stat .delta{font-size:11px;color:var(--green);min-height:14px}.delta.neg{color:var(--red)}
+/* Tabs */
+nav.tabs{display:flex;gap:8px;margin:10px 0 12px;position:sticky;top:86px;z-index:29}
+.tab{flex:1;min-height:52px;padding:12px 8px;border-radius:999px;border:1px solid var(--line2);background:rgba(10,30,18,.9);color:var(--ink);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;backdrop-filter:blur(8px)}
+.tab svg{width:19px;height:19px;flex:0 0 auto}.tab[aria-selected="true"]{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#231a00;border-color:transparent;box-shadow:0 10px 26px rgba(212,175,55,.35);transform:translateY(-1px)}
+/* Panels & cards */
+section.panel{display:none;background:var(--panel);border:1px solid var(--line2);border-radius:22px;padding:16px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+section.panel.active{display:block;animation:fade .35s ease}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2{margin:2px 0 8px;font-size:clamp(22px,4vw,30px)}h3{margin:18px 0 8px}p,li{line-height:1.55;color:var(--muted)}strong{color:var(--ink)}small{color:var(--muted)}
+.card{background:var(--panel2);border:1px solid var(--line2);border-radius:var(--radius);padding:14px}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.btn{appearance:none;border:0;min-height:50px;border-radius:999px;padding:12px 20px;font-weight:900;font-size:15px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#231a00;box-shadow:0 8px 20px rgba(0,0,0,.35);transition:.15s}
+.btn:active{transform:translateY(2px) scale(.99)}.btn.secondary{background:#eef5ee;color:#14361f}.btn.ghost{background:rgba(255,255,255,.07);color:var(--ink);border:1px solid var(--line2);box-shadow:none}.btn.danger{background:#5a1d1d;color:#ffd7d7;border:1px solid #ff6b6b55}.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}.row .spacer{flex:1}
+/* Tools */
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;margin:12px 0}
+.tool{min-height:52px;padding:9px 10px;border-radius:14px;border:1px solid var(--line2);background:#0c2a18;color:var(--ink);font-weight:800;text-align:left;display:flex;gap:8px;align-items:center;font-size:13px;line-height:1.25}
+.tool svg{width:20px;height:20px;flex:0 0 auto}.tool small{display:block;color:var(--muted);font-weight:600}.tool[aria-pressed="true"]{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#231a00;border-color:transparent}.tool[aria-pressed="true"] small{color:#5a4300}
+.tool.fac{border-color:rgba(212,175,55,.35)}
+/* Canvas */
+.canvasWrap{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#1d5c2e;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 16px 40px rgba(0,0,0,.4)}
+canvas.course{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair}
+.canvasBar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}.chip{padding:8px 12px;border-radius:999px;background:rgba(0,0,0,.28);border:1px solid var(--line2);font-size:13px;font-weight:700}
+.iconBtn{min-width:48px;min-height:48px;border-radius:14px;border:1px solid var(--line2);background:#0c2a18;color:var(--ink);font-weight:900;padding:8px 12px}
+.iconBtn[aria-pressed="true"]{background:var(--gold);color:#231a00}
+/* Meters / bars */
+.meterWrap{margin:10px 0}.meterLabel{display:flex;justify-content:space-between;font-size:13px;font-weight:800;margin-bottom:6px}.meterLabel output{color:var(--gold2)}
+.progress{height:16px;background:#07170d;border:1px solid var(--line2);border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#3fa34d,var(--gold));transition:width .6s cubic-bezier(.2,.8,.2,1);border-radius:999px}
+.bar.blue{background:linear-gradient(90deg,#2b7fb8,#7ed3ff)}.bar.red{background:linear-gradient(90deg,#c0392b,#ff8a5b)}
+.powerMeter{height:30px;background:#07170d;border:1px solid var(--line2);border-radius:999px;overflow:hidden;position:relative}
+.powerFill{height:100%;width:0;background:linear-gradient(90deg,#57c96b 0 55%,#f3d27a 55% 78%,#ff5a5a 78%);transition:none}
+.powerFill::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 9%,rgba(0,0,0,.18) 9% 10%)}
+.checklist{list-style:none;padding:0;margin:8px 0;display:grid;gap:7px}.checklist li{display:flex;gap:9px;align-items:center;background:rgba(0,0,0,.22);border:1px solid var(--line2);border-radius:12px;padding:9px 11px;color:var(--ink);font-size:14px}
+.check{width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;background:#23402c;color:#9db8a4;font-size:13px;flex:0 0 auto}.ok .check{background:var(--green);color:#06280f}.checklist li small{margin-left:auto}
+/* Sliders */
+label.slider{display:block;margin:16px 0 4px;font-weight:900}label.slider output{color:var(--gold2);float:right}
+input[type=range]{width:100%;accent-color:var(--gold);height:36px}
+select,input[type=number]{min-height:50px;padding:10px 12px;border-radius:12px;background:#0c2a18;color:var(--ink);border:1px solid var(--line2);font-size:15px}
+/* Tables / scorecard */
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line2)}th{color:var(--gold2);font-size:11px;letter-spacing:.08em;text-transform:uppercase}td:first-child,th:first-child{text-align:left}
+.scoreGood{color:var(--green);font-weight:900}.scoreBad{color:var(--red);font-weight:900}
+.log{background:#06150b;border:1px solid var(--line2);border-radius:14px;padding:12px 14px;min-height:84px;white-space:pre-wrap;line-height:1.6;color:#dff0e2;font-size:14px;max-height:260px;overflow:auto}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.kpi div{background:rgba(0,0,0,.25);border:1px solid var(--line2);border-radius:14px;padding:10px;text-align:center}.kpi b{display:block;font-size:18px}.kpi span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+/* Modal / toast / confetti */
+.modalBack{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;place-items:center;z-index:80;padding:16px;backdrop-filter:blur(6px)}.modalBack.open{display:grid}
+.modal{width:min(640px,100%);max-height:88vh;overflow:auto;background:linear-gradient(180deg,#143824,#0a2114);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow);animation:pop .25s ease}@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.modal h2{color:var(--gold2)} .plRow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.14)} .plRow.total{font-weight:900;color:var(--gold2);font-size:17px}
+#toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:100;display:grid;gap:8px;width:min(520px,92vw)}
+.toast{background:#102b1a;border:1px solid var(--gold);color:var(--ink);border-radius:14px;padding:13px 16px;box-shadow:var(--shadow);animation:fade .3s;font-weight:700;text-align:center}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
+.topBar{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
+.legend{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted)}.legend i{width:14px;height:14px;border-radius:4px;display:inline-block;vertical-align:-2px;margin-right:4px}
+.clubBtn{min-height:54px;padding:10px 14px;border-radius:14px;border:1px solid var(--line2);background:#0c2a18;color:var(--ink);font-weight:900}.clubBtn[aria-pressed="true"]{background:var(--gold);color:#231a00}
+.clubBtn small{display:block;font-weight:600;color:inherit;opacity:.75}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:18px;line-height:1.6}
+@media(max-width:820px){.hud{grid-template-columns:repeat(3,1fr);top:6px}nav.tabs{top:118px}.grid2,.grid3{grid-template-columns:1fr}.kpi{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){body{padding:10px 8px 84px}.hud{grid-template-columns:repeat(2,1fr)}nav.tabs{top:auto;bottom:10px;position:fixed;left:8px;right:8px;z-index:60}.tab{min-height:56px}section.panel{padding:13px}.tools{grid-template-columns:repeat(auto-fill,minmax(108px,1fr))}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<header>
-<h1>⛳ Golf Course Tycoon</h1>
-<p class="sub">Design a course golfers love, run it at a profit, then tee off and try to beat par on your own creation.</p>
+<header class="hero">
+  <div class="kicker">Premium Tycoon &middot; Design &middot; Manage &middot; Play</div>
+  <h1>Golf Course Tycoon</h1>
+  <p class="sub">Design a beautiful 9-hole course on canvas, run it through a 12-week season, then tee off and play every hole you built.</p>
+  <div><span class="badge" id="seasonBadge">Season goal: Week 12 &middot; Cash $850,000+ &middot; Condition 70+ &middot; Reputation 65+</span></div>
+  <div class="topBar">
+    <button class="iconBtn" id="soundBtn" type="button" aria-pressed="true" aria-label="Toggle sound">Sound: On</button>
+    <button class="iconBtn" id="helpBtn" type="button">How to Play</button>
+    <button class="iconBtn" id="newGameBtn" type="button">New Game</button>
+  </div>
 </header>
 
 <div class="hud" aria-live="polite">
-<div class="stat"><b id="money">$2,500</b><span>Money</span></div>
-<div class="stat"><b id="rep">★★★☆☆</b><span>Reputation</span></div>
-<div class="stat"><b id="rating">0%</b><span>Course rating</span></div>
-<div class="stat"><b id="day">Day 1</b><span>Season day</span></div>
+  <div class="stat"><b id="hudCash">$750,000</b><span>Cash</span><div class="delta" id="hudCashDelta"></div></div>
+  <div class="stat"><b id="hudWeek">Week 1 / 12</b><span>Season</span><div class="delta" id="hudWeather">Weather: Fine</div></div>
+  <div class="stat"><b id="hudRating">0</b><span>Course Rating</span><div class="delta" id="hudPrestige">Prestige 0</div></div>
+  <div class="stat"><b id="hudCondition">82%</b><span>Condition</span><div class="delta" id="hudBeauty">Beauty 0</div></div>
+  <div class="stat"><b id="hudRep">55</b><span>Reputation</span><div class="delta" id="hudDiff">Difficulty 0</div></div>
+  <div class="stat"><b id="hudSat">60%</b><span>Satisfaction</span><div class="delta" id="hudVisitors">Visitors —</div></div>
 </div>
 
 <nav class="tabs" aria-label="Game modes">
-<button class="tab" id="tab-design" aria-selected="true" type="button">🎨 Design</button>
-<button class="tab" id="tab-manage" aria-selected="false" type="button">📋 Manage</button>
-<button class="tab" id="tab-play" aria-selected="false" type="button">🏌️ Play</button>
+  <button class="tab" id="tab-design" aria-selected="true" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 19l7-7a4.95 4.95 0 10-7-7l-7 7v7h7z"/><path d="M18 13l-7-7"/><path d="M5 21l3.5-1.5L7 16 5 21z"/></svg>Design</button>
+  <button class="tab" id="tab-manage" aria-selected="false" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-6 4 3 5-8"/></svg>Manage</button>
+  <button class="tab" id="tab-play" aria-selected="false" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="18" r="3"/><path d="M12 15V4"/><path d="M12 4h7l-2 3 2 3h-7"/></svg>Play</button>
 </nav>
 
+<!-- ================= DESIGN ================= -->
 <section class="panel active" id="panel-design" aria-labelledby="tab-design">
-<h2>🎨 Design your course</h2>
-<p>Pick a tool, then click tiles to build. You need at least <strong>1 tee</strong>, <strong>6 fairway tiles</strong> and <strong>1 green</strong> to open. Sand, water and trees make it prettier and harder — and raise your rating.</p>
-<div class="tools" id="tools"></div>
-<div class="grid" id="grid" aria-label="Course designer grid"></div>
-<p id="designMsg">Tip: a connected run of fairway from tee to green scores best.</p>
-<div class="row"><button class="btn secondary" id="clearBtn" type="button">Clear course</button><button class="btn ghost" id="presetBtn" type="button">Load starter course</button></div>
+  <h2>Design & Build</h2>
+  <p>Paint a <strong>40 &times; 28</strong> course. Place <strong>Tee 1–9</strong> and <strong>Green 1–9</strong> to define nine real holes, shape them with fairways and hazards, then add facilities. Drag to paint, use Pan to move, scroll / pinch to zoom.</p>
+  <div class="canvasBar">
+    <span class="chip" id="budgetChip">Budget enforced</span><span class="chip" id="coordChip">Tile —</span><span class="chip" id="zoomChip">Zoom 100%</span>
+    <span class="spacer" style="flex:1"></span>
+    <label for="holeSel" style="font-weight:800">Hole No.</label>
+    <select id="holeSel" aria-label="Hole number for tee and green tools"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option selected>9</option></select>
+  </div>
+  <div class="tools" id="tools" role="group" aria-label="Building tools"></div>
+  <div class="canvasWrap"><canvas class="course" id="designCanvas" width="1120" height="784" aria-label="Course designer canvas. Select a tool then tap or drag to paint."></canvas></div>
+  <div class="canvasBar">
+    <button class="iconBtn" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+    <button class="iconBtn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+    <button class="iconBtn" id="zoomFit" type="button">Fit</button>
+    <button class="iconBtn" id="panBtn" type="button" aria-pressed="false">Pan</button>
+    <span class="legend"><span><i style="background:#79c25f"></i>Fairway</span><span><i style="background:#2fae5f"></i>Green</span><span><i style="background:#e8cf8a"></i>Sand</span><span><i style="background:#3d9bd6"></i>Water</span><span><i style="background:#1e5c33"></i>Trees</span></span>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:0">Course scores</h3>
+      <div class="meterWrap"><div class="meterLabel"><span>Rating</span><output id="scoreRating">0 / 100</output></div><div class="progress"><div class="bar" id="barRating"></div></div></div>
+      <div class="meterWrap"><div class="meterLabel"><span>Beauty</span><output id="scoreBeauty">0 / 100</output></div><div class="progress"><div class="bar blue" id="barBeauty"></div></div></div>
+      <div class="meterWrap"><div class="meterLabel"><span>Difficulty</span><output id="scoreDiff">0 / 100</output></div><div class="progress"><div class="bar red" id="barDiff"></div></div></div>
+      <div class="meterWrap"><div class="meterLabel"><span>Prestige</span><output id="scorePrestige">0 / 100</output></div><div class="progress"><div class="bar" id="barPrestige"></div></div></div>
+      <p id="designMsg" aria-live="polite">Your starter course is ready to edit.</p>
+    </div>
+    <div class="card"><h3 style="margin-top:0">Opening checklist</h3><ul class="checklist" id="checklist"></ul></div>
+  </div>
+  <div class="card" style="margin-top:12px"><h3 style="margin-top:0">Hole-by-hole overview — your 9 holes at a glance</h3><div style="overflow:auto"><table id="holeTable" aria-label="Hole by hole overview"></table></div><p><small>Par is derived from the real tee-to-green distance on your design (16 m per tile): under 210 m = Par 3, 210–389 m = Par 4, 390 m+ = Par 5. Move a tee or green and the par, distance and Play hole all update instantly. Hazards near the line of play raise Difficulty; water, trees and paths raise Beauty.</small></p></div>
+  <div class="row">
+    <button class="btn secondary" id="presetBtn" type="button">Restore Starter Course</button>
+    <button class="btn ghost" id="clearBtn" type="button">Clear to Rough</button>
+    <span class="spacer"></span><small id="saveNote">Autosaved locally</small>
+  </div>
 </section>
 
+<!-- ================= MANAGE ================= -->
 <section class="panel" id="panel-manage" aria-labelledby="tab-manage">
-<h2>📋 Manage the business</h2>
-<p>Set your prices and spending, then open for a day. Happier golfers and a better course bring more visitors — charge too much and they stay away.</p>
-<label for="fee">Green fee: <output id="feeOut">$45</output></label>
-<input type="range" id="fee" min="10" max="150" value="45" step="5">
-<label for="marketing">Marketing per day: <output id="mktOut">$100</output></label>
-<input type="range" id="marketing" min="0" max="500" value="100" step="25">
-<label for="staff">Ground staff: <output id="staffOut">3 staff ($60/day each)</output></label>
-<input type="range" id="staff" min="0" max="10" value="3" step="1">
-<div class="row"><button class="btn" id="simBtn" type="button">▶ Open for a day</button><button class="btn ghost" id="resetBtn" type="button">↻ Reset game</button></div>
-<h3>Clubhouse log</h3><div class="log" id="log">Welcome! Design a course, then open for your first day.</div>
+  <h2>Manage & Hit Your Budgets</h2>
+  <p>Set prices and spending, then advance the week. Visitors respond to rating, condition, reputation, weather, price and marketing. Finish <strong>Week 12</strong> with <strong>$850,000+</strong>, <strong>Condition 70+</strong> and <strong>Reputation 65+</strong> to lift the trophy. Go bankrupt and the season ends.</p>
+  <div class="kpi" style="margin:12px 0">
+    <div><b id="kpiTarget">$850k</b><span>Cash target</span></div><div><b id="kpiWeeks">12</b><span>Weeks left</span></div><div><b id="kpiMembers">0</b><span>Members</span></div><div><b id="kpiLastProfit">$0</b><span>Last week profit</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <label class="slider" for="fee">Green fee <output id="feeOut">$65</output></label><input type="range" id="fee" min="25" max="180" value="65" step="5" aria-describedby="feeHint"><small id="feeHint">Higher fees earn more per golfer but reduce demand.</small>
+      <label class="slider" for="maintSpend">Maintenance spend <output id="maintOut">$18,000 / wk</output></label><input type="range" id="maintSpend" min="0" max="40000" value="18000" step="1000"><small>Protects Condition. Mowing is also charged per maintained tile.</small>
+      <label class="slider" for="marketing">Marketing <output id="mktOut">$6,000 / wk</output></label><input type="range" id="marketing" min="0" max="25000" value="6000" step="500">
+      <label class="slider" for="staffLevel">Grounds staff level <output id="staffOut">6 staff</output></label><input type="range" id="staffLevel" min="0" max="14" value="6" step="1"><small>Staff wages are charged weekly and lift Condition & Satisfaction.</small>
+      <div class="row"><button class="btn" id="simWeekBtn" type="button">Advance Week ▸</button><button class="btn ghost" id="loanBtn" type="button">Take $50k Loan (8%)</button></div>
+      <p id="loanNote">No loan outstanding.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Club health</h3>
+      <div class="meterWrap"><div class="meterLabel"><span>Condition</span><output id="mCondition">82%</output></div><div class="progress"><div class="bar" id="barCondition"></div></div></div>
+      <div class="meterWrap"><div class="meterLabel"><span>Reputation</span><output id="mRep">55 / 100</output></div><div class="progress"><div class="bar blue" id="barRep"></div></div></div>
+      <div class="meterWrap"><div class="meterLabel"><span>Satisfaction</span><output id="mSat">60%</output></div><div class="progress"><div class="bar" id="barSat"></div></div></div>
+      <h3>Cash history</h3><canvas id="chartCanvas" width="520" height="150" style="width:100%;height:auto;background:#06150b;border:1px solid var(--line2);border-radius:12px" aria-label="Cash history chart"></canvas>
+      <h3>Clubhouse log</h3><div class="log" id="log">Welcome. Your 9-hole starter course is open for editing.</div>
+    </div>
+  </div>
 </section>
 
+<!-- ================= PLAY ================= -->
 <section class="panel" id="panel-play" aria-labelledby="tab-play">
-<h2>🏌️ Play your course</h2>
-<p id="holeInfo">Hole: 320m · Par 4</p>
-<p><strong>Ball:</strong> <span id="ballPos">0m</span> &nbsp;·&nbsp; <strong>Strokes:</strong> <span id="strokes">0</span></p>
-<div class="progress"><div class="bar" id="ballBar"></div></div>
-<label for="powerRange">Swing power (tap Swing while it moves, or drag and swing)</label>
-<div class="meter"><div class="power" id="powerBar"></div></div>
-<input type="range" id="powerRange" min="5" max="100" value="60">
-<div class="row">
-<select id="club" aria-label="Club"><option value="driver">Driver — long</option><option value="iron">Iron — medium</option><option value="putter">Putter — short & accurate</option></select>
-<button class="btn" id="swingBtn" type="button">🏌️ Swing</button>
-<button class="btn secondary" id="newHoleBtn" type="button">New hole</button>
-</div>
-<div class="log" id="playLog" style="margin-top:12px">Choose a club and swing. Sink it in or under par to earn prize money and reputation!</div>
+  <h2>Play Your Course</h2>
+  <p id="holeInfo">Hole 1 · Par 4 · 0 m</p>
+  <div class="canvasWrap"><canvas class="course" id="playCanvas" width="980" height="560" aria-label="Playable hole view drawn from your course design"></canvas></div>
+  <div class="canvasBar">
+    <button class="iconBtn" id="prevHole" type="button">‹ Hole</button><span class="chip" id="playStatus">Ball on tee</span><span class="chip" id="lieChip">Lie: Tee</span><span class="chip" id="distChip">0 m to pin</span><button class="iconBtn" id="nextHole" type="button">Hole ›</button>
+    <span style="flex:1"></span><span class="chip" id="breakChip">Green break: —</span>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">Shot controls</h3>
+      <p style="margin-top:0"><strong>Aim:</strong> drag on the hole view to set the aim arrow. <strong>Power:</strong> press & hold <em>Swing</em>, release in the green/yellow for accuracy — red adds power but sprays the shot.</p>
+      <div class="row" id="clubRow" role="group" aria-label="Club selection">
+        <button class="clubBtn" data-club="driver" type="button" aria-pressed="true">Driver<small>up to 260 m</small></button>
+        <button class="clubBtn" data-club="iron" type="button" aria-pressed="false">5-Iron<small>up to 175 m</small></button>
+        <button class="clubBtn" data-club="wedge" type="button" aria-pressed="false">Wedge<small>up to 95 m</small></button>
+        <button class="clubBtn" data-club="putter" type="button" aria-pressed="false">Putter<small>up to 28 m</small></button>
+      </div>
+      <div class="meterWrap"><div class="meterLabel"><span>Power / accuracy meter</span><output id="powerOut">Hold Swing…</output></div><div class="powerMeter"><div class="powerFill" id="powerFill"></div></div></div>
+      <div class="row">
+        <button class="btn" id="swingBtn" type="button">Hold to Swing…</button>
+        <button class="btn ghost" id="resetHoleBtn" type="button">Reset Hole</button>
+        <button class="btn secondary" id="newRoundBtn" type="button">New Round</button>
+      </div>
+      <div class="log" id="playLog" style="margin-top:12px">Drag to aim, choose a club, then hold and release Swing.</div>
+    </div>
+    <div class="card"><h3 style="margin-top:0">Live scorecard</h3><div style="overflow:auto"><table id="scoreTable" aria-label="Nine hole scorecard"></table></div>
+      <p id="roundSummary">Round: 0 strokes · Even par · Prize pool grows for under-par rounds.</p>
+      <div class="row"><button class="btn ghost" id="claimPrizeBtn" type="button">Finish Round & Collect Prize</button></div>
+    </div>
+  </div>
 </section>
 
-<footer>Golf Course Tycoon — free to play in your browser. No downloads, no sign-up.</footer>
+<footer>Golf Course Tycoon v2 — one self-contained file. No downloads, no sign-up, works offline after first load.<br>Progress autosaves in this browser (localStorage).</footer>
 </main>
 
+<div id="toasts" aria-live="polite"></div><canvas id="confetti" width="800" height="600" aria-hidden="true"></canvas>
+
+<!-- Weekly report modal -->
+<div class="modalBack" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportTitle"><div class="modal"><h2 id="reportTitle">Weekly P&L</h2><div id="reportBody"></div><div class="row"><button class="btn" id="reportClose" type="button">Continue</button></div></div></div>
+<!-- Help modal -->
+<div class="modalBack" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal"><h2 id="helpTitle">How to Play</h2>
+<h3>1) Design & Build</h3><p>Select a paint tool and drag on the canvas. Tee and Green use the selected Hole No. (1–9) — each hole needs its matching tee and green. Facilities occupy a 2×2 footprint and add revenue, prestige or condition benefits. Bulldoze removes tiles/facilities. Pan/zoom to work on detail.</p>
+<h3>2) Manage</h3><p>Balance green fee, maintenance, marketing and staff. Advance Week for a full P&L: green fees, memberships, Pro Shop and Restaurant income versus wages, per-tile mowing, facility upkeep, marketing and loan interest. Random events and weather change demand. Win at Week 12 with $850k+, Condition 70+, Reputation 65+.</p>
+<h3>3) Play</h3><p>Every hole is drawn from your actual tee, green, fairways and hazards. Drag to aim, pick Driver / 5-Iron / Wedge / Putter, hold Swing and release. Water = penalty drop, sand and rough reduce power, trees can deflect. On the green, watch the break indicator. Finish the round to bank prize money into Manage.</p>
+<p><strong>Tips:</strong> connected fairways, water and trees near (not on) the line of play, and a Practice Range + Clubhouse lift rating fastest. Keep maintenance funded — Condition drives everything.</p>
+<div class="row"><button class="btn" id="helpClose" type="button">Start Playing</button></div></div></div>
+<!-- End modal -->
+<div class="modalBack" id="endModal" role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="modal"><h2 id="endTitle">Season Over</h2><div id="endBody"></div><div class="row"><button class="btn" id="endRestart" type="button">Play New Season</button><button class="btn ghost" id="endClose" type="button">Keep Inspecting</button></div></div></div>
+<!-- Confirm modal -->
+<div class="modalBack" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="modal"><h2 id="confirmTitle">Start a new game?</h2><p>This clears your saved course, cash and season and restores the starter course with $750,000. This cannot be undone.</p><div class="row"><button class="btn danger" id="confirmYes" type="button">Yes — New Game</button><button class="btn ghost" id="confirmNo" type="button">Cancel</button></div></div></div>
+
 <script>
-(function(){
 "use strict";
-var $=function(id){return document.getElementById(id);};
-var state={money:2500,rep:3,day:1,tool:"fairway",tiles:[],strokes:0,ball:0,hole:320,par:4,over:false};
-var costs={rough:0,fairway:20,tee:50,green:80,sand:35,water:60,trees:25,path:15};
-var tools=[["fairway","🌿 Fairway $20"],["tee","🏳️ Tee $50"],["green","⛳ Green $80"],["sand","🏖️ Sand $35"],["water","💧 Water $60"],["trees","🌲 Trees $25"],["path","🟫 Path $15"],["rough","⬛ Clear $0"]];
-var emoji={rough:"",fairway:"",tee:"🏳️",green:"🚩",sand:"",water:"〰️",trees:"🌲",path:""};
-
-function stars(){var r=Math.max(1,Math.min(5,Math.round(state.rep)));return "★★★★★".slice(0,r)+"☆☆☆☆☆".slice(0,5-r);}
-function rating(){
-  var c={}; state.tiles.forEach(function(t){c[t]=(c[t]||0)+1;});
-  var score=0;
-  if(c.tee)score+=20; if(c.green)score+=25; score+=Math.min(30,(c.fairway||0)*2);
-  score+=Math.min(10,(c.sand||0)+(c.water||0)); score+=Math.min(10,(c.trees||0)); score+=Math.min(5,(c.path||0));
-  return {score:Math.min(100,score),counts:c};
+/* ================================================================
+   GOLF COURSE TYCOON v2
+   Sections: 1 Utils/Audio  2 Data  3 State/Save  4 Course model &
+   scoring  5 Canvas rendering  6 Design input  7 Manage sim
+   8 Play engine  9 UI/modals/confetti  10 Init
+   ================================================================ */
+/* ---------- 1. Utils & synthesised audio (no audio files) ---------- */
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const fmt$=n=>{const s=n<0?"-$":"$";return s+Math.abs(Math.round(n)).toLocaleString("en-AU");};
+const hash=(x,y)=>{let h=(x*374761393+y*668265263)^0x5bf03635;h=(h^(h>>13))*1274126177;return ((h^(h>>16))>>>0)/4294967295;};
+let audioCtx=null, soundOn=true;
+function beep(freq,dur,type,vol,when){ if(!soundOn) return; try{ audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)(); const t=audioCtx.currentTime+(when||0); const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.type=type||"sine"; o.frequency.setValueAtTime(freq,t); g.gain.setValueAtTime(vol||.08,t); g.gain.exponentialRampToValueAtTime(.0001,t+(dur||.12)); o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+(dur||.12)+.02);}catch(e){} }
+const sClick=()=>beep(660,.06,"triangle",.05);
+const sPaint=()=>beep(420,.05,"triangle",.04);
+const sCash=()=>{beep(880,.09,"sine",.06);beep(1320,.12,"sine",.05,.07);};
+const sThwack=()=>{beep(180,.08,"square",.10);beep(90,.14,"sine",.12,.02);};
+const sSplash=()=>{beep(300,.25,"sine",.07);beep(180,.3,"sine",.06,.08);};
+const sCheer=()=>{[523,659,784,1046].forEach((f,i)=>beep(f,.18,"triangle",.06,i*.09));};
+function vibrate(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms);}catch(e){} }
+function toast(msg){ const d=document.createElement("div"); d.className="toast"; d.textContent=msg; $("toasts").appendChild(d); setTimeout(()=>{d.style.opacity="0"; setTimeout(()=>d.remove(),350);},3400); }
+/* ---------- 2. Game data: tiles, tools, facilities ---------- */
+const COLS=40, ROWS=28, N=COLS*ROWS, TILE_M=16; // each tile ≈16 m for par/distance (varied par 3/4/5 holes)
+const TARGET_CASH=850000, FINAL_WEEK=12;
+const TILE={
+ rough:{label:"Rough",cost:0,upkeep:0}, fairway:{label:"Fairway",cost:900,upkeep:9}, tee:{label:"Tee",cost:2500,upkeep:30},
+ green:{label:"Green",cost:4200,upkeep:35}, sand:{label:"Sand Bunker",cost:1600,upkeep:18}, water:{label:"Water",cost:2800,upkeep:22},
+ trees:{label:"Trees",cost:1100,upkeep:8}, path:{label:"Path",cost:700,upkeep:5}
+};
+// Facilities: 2x2 footprint, weekly upkeep, prestige & revenue effects
+const FACILITY={
+ clubhouse:{label:"Clubhouse",cost:48000,upkeep:2600,prestige:16,desc:"Members, prestige, satisfaction"},
+ proshop:{label:"Pro Shop",cost:26000,upkeep:1200,prestige:8,revPerVisitor:9,desc:"+$9 shop spend / visitor"},
+ range:{label:"Practice Range",cost:30000,upkeep:1500,prestige:9,desc:"Rating & satisfaction boost"},
+ restaurant:{label:"Restaurant / Bar",cost:34000,upkeep:1900,prestige:10,revPerVisitor:13,desc:"+$13 food & drink / visitor"},
+ carpark:{label:"Car Park",cost:14000,upkeep:500,prestige:3,desc:"More visitors, satisfaction"},
+ maintenance:{label:"Maintenance Shed",cost:18000,upkeep:700,prestige:2,desc:"Condition decays slower"},
+ irrigation:{label:"Irrigation / Lake System",cost:28000,upkeep:1100,prestige:7,desc:"Condition & beauty boost"}
+};
+const TOOLS=[
+ ["fairway","Fairway","Mown playing corridor"],["tee","Tee (Hole No.)","Start of selected hole"],["green","Green (Hole No.)","Pin of selected hole"],
+ ["rough","Rough","Default grass / erase paint"],["sand","Sand","Bunker hazard"],["water","Water","Lake / pond hazard"],
+ ["trees","Trees","Canopy & shade"],["path","Path","Cart path"],
+ ["clubhouse","Clubhouse","FACILITY · 2×2"],["proshop","Pro Shop","FACILITY · 2×2"],["range","Practice Range","FACILITY · 2×2"],
+ ["restaurant","Restaurant / Bar","FACILITY · 2×2"],["carpark","Car Park","FACILITY · 2×2"],["maintenance","Maintenance Shed","FACILITY · 2×2"],
+ ["irrigation","Irrigation / Lake","FACILITY · 2×2"],["bulldoze","Bulldoze","Remove tile / facility"],["pan","Pan / Move","Drag to explore"]
+];
+const CLUBS={driver:{label:"Driver",max:260,spread:9},iron:{label:"5-Iron",max:175,spread:5.5},wedge:{label:"Wedge",max:95,spread:3.2},putter:{label:"Putter",max:28,spread:1.1}};
+const WEATHERS=[{n:"Fine",mult:1.08,cond:0},{n:"Sunny & Warm",mult:1.15,cond:-1},{n:"Breezy",mult:.96,cond:0},{n:"Overcast",mult:.92,cond:0},{n:"Rain Showers",mult:.62,cond:-3},{n:"Heatwave",mult:.78,cond:-6},{n:"Storm Front",mult:.45,cond:-8}];
+const EVENTS=[
+ {n:"Storm damage",txt:"Overnight storm brought down branches. Condition fell, clean-up cost $6,500.",cash:-6500,cond:-7,rep:-1},
+ {n:"Heatwave",txt:"Heatwave stressed the greens. Condition fell unless irrigation helps.",cash:-2500,cond:-6,rep:0},
+ {n:"Tournament offer",txt:"A local tournament booked the course! Bonus $22,000 and reputation up — wear on the course.",cash:22000,cond:-4,rep:4},
+ {n:"Vandalism",txt:"Vandals damaged two greens overnight. Repairs $4,800, reputation dipped.",cash:-4800,cond:-5,rep:-2},
+ {n:"Pro visit",txt:"A touring pro practised at your range and praised the layout on socials!",cash:3500,cond:0,rep:5},
+ {n:"Wedding booking",txt:"The clubhouse hosted a wedding. Restaurant bonus $9,500.",cash:9500,cond:0,rep:2,needs:"clubhouse"},
+ {n:"Junior clinic boom",txt:"School holiday clinics filled the range. Bonus $6,000.",cash:6000,cond:-1,rep:3,needs:"range"},
+ {n:"Quiet week",txt:"A calm week — members enjoyed the peace and the course recovered slightly.",cash:0,cond:3,rep:1}
+];
+/* ---------- 3. State, save / load ---------- */
+let S=null;
+function blankState(){ return {v:2,cash:750000,week:1,condition:82,reputation:55,satisfaction:62,members:120,loan:0,tiles:Array(N).fill("rough"),teeMap:{},greenMap:{},fee:65,maint:18000,marketing:6000,staff:6,tool:"fairway",holeNo:9,club:"driver",cashHist:[750000],lastProfit:0,weather:"Fine",seasonOver:false,round:null,muted:false}; }
+function save(){ try{ S.cashHist=S.cashHist.slice(-24); localStorage.setItem("golfTycoonV2",JSON.stringify(S)); $("saveNote").textContent="Autosaved "+new Date().toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})+" (Melbourne)"; }catch(e){} }
+function load(){ try{ const s=JSON.parse(localStorage.getItem("golfTycoonV2")||"null"); if(s&&s.v===2&&Array.isArray(s.tiles)&&s.tiles.length===N){ S=Object.assign(blankState(),s); return true; } }catch(e){} return false; }
+/* ---------- 4. Course model, holes & scoring ---------- */
+const idx=(x,y)=>y*COLS+x, xy=i=>({x:i%COLS,y:Math.floor(i/COLS)});
+function tileAt(x,y){ if(x<0||y<0||x>=COLS||y>=ROWS) return "trees"; return S.tiles[idx(x,y)]; }
+function counts(){ const c={}; S.tiles.forEach(t=>c[t]=(c[t]||0)+1); return c; }
+function hasFac(k){ return S.tiles.includes(k); }
+function holePairs(){ const out=[]; for(let h=1;h<=9;h++){ const ti=Object.keys(S.teeMap).find(k=>S.teeMap[k]===h), gi=Object.keys(S.greenMap).find(k=>S.greenMap[k]===h);
+  if(ti!==undefined&&gi!==undefined){ const t=xy(+ti),g=xy(+gi); const distM=Math.round(Math.hypot(g.x-t.x,g.y-t.y)*TILE_M); const par=distM<210?3:(distM<390?4:5); out.push({hole:h,tee:t,green:g,teeI:+ti,greenI:+gi,distM,par}); } else out.push({hole:h,tee:null,green:null,distM:0,par:0}); } return out; }
+function computeScores(){ const c=counts(), pairs=holePairs(), valid=pairs.filter(p=>p.tee).length;
+ const fair=c.fairway||0, wat=c.water||0, snd=c.sand||0, tre=c.trees||0, pth=c.path||0;
+ let rating=valid*5 + clamp(fair/14,0,14) + (hasFac("clubhouse")?6:0)+(hasFac("range")?4:0)+ clamp((wat+snd)/8,0,6);
+ let beauty=clamp(tre/7 + wat/4 + snd/8 + pth/12 + (hasFac("irrigation")?10:0) + valid*2, 0, 100);
+ let difficulty=clamp(valid*4 + snd/3 + wat/2.2 + tre/9 + clamp(fair? (snd+wat)/Math.max(1,fair)*55:0,0,18),0,100);
+ let prestige=0; Object.keys(FACILITY).forEach(k=>{ if(hasFac(k)) prestige+=FACILITY[k].prestige; }); prestige=clamp(prestige + valid*2 + beauty*.18,0,100);
+ rating=clamp(Math.round(rating + prestige*.12),0,100); beauty=Math.round(beauty); difficulty=Math.round(difficulty); prestige=Math.round(prestige);
+ return {rating,beauty,difficulty,prestige,counts:c,valid,pairs}; }
+function validation(sc){ sc=sc||computeScores(); const items=[
+  ["Clubhouse built",hasFac("clubhouse"),"Prestige & members"],["9 tees placed",Object.keys(S.teeMap).length>=9,Object.keys(S.teeMap).length+" / 9"],
+  ["9 greens placed",Object.keys(S.greenMap).length>=9,Object.keys(S.greenMap).length+" / 9"],["9 complete holes (tee→green)",sc.valid>=9,sc.valid+" / 9 holes"],
+  ["Practice Range",hasFac("range"),"Rating boost"],["Pro Shop or Restaurant",hasFac("proshop")||hasFac("restaurant"),"Extra revenue"],
+  ["Car Park",hasFac("carpark"),"Visitor access"],["Rating at least 55",sc.rating>=55,sc.rating+" / 100"]]; return items; }
+function isOpen(sc){ return validation(sc).every(i=>i[1]); }
+/* Starter course: 9 horizontal holes, facilities on the east apron */
+function buildStarter(){ const t=Array(N).fill("rough"), teeMap={}, greenMap={};
+ const set=(x,y,v)=>{ if(x>=0&&y>=0&&x<COLS&&y<ROWS) t[idx(x,y)]=v; };
+ // border trees + texture copses
+ for(let x=0;x<COLS;x++){ set(x,0,"trees"); set(x,ROWS-1,"trees"); } for(let y=0;y<ROWS;y++){ set(0,y,"trees"); set(COLS-1,y,"trees"); }
+ [[6,1],[18,1],[30,1],[9,27-1],[22,26],[33,26],[4,13],[37,14]].forEach(p=>{set(p[0],p[1],"trees");set(p[0]+1,p[1],"trees");});
+ // picturesque lake west-centre and stream ponds
+ [[13,12],[14,12],[13,13],[14,13],[25,7],[26,7]].forEach(p=>set(p[0],p[1],"water"));
+ const fairLen=[11,16,21,26,14,19,24,28,17]; // varied lengths -> par 3, 4 and 5 holes
+ for(let h=1;h<=9;h++){ const y=1+h*3-1; // rows 3,6,... actually: 3..27 step3 -> use 2+h*? keep inside
+ }
+ // (rows recomputed cleanly below)
+ for(let h=1;h<=9;h++){ const y=2+(h-1)*3; if(y>=ROWS-1) break; const len=fairLen[h-1], gx=4+len;
+   teeMap[idx(3,y)]=h; set(3,y,"tee");
+   for(let x=4;x<gx;x++){ set(x,y,"fairway"); if(h%2===0&&x%7===0) set(x,y-1,"path"); }
+   greenMap[idx(gx,y)]=h; set(gx,y,"green"); set(gx+1,y,"fairway");
+   set(gx-2,y-1,"sand"); if(h%3===0) set(gx-3,y+1,"sand"); if(h%4===0){ set(Math.floor((3+gx)/2),y+1,"water"); }
+   set(2,y+1,"trees"); set(gx+3,y,"trees"); }
+ // cart path spine
+ for(let y=2;y<ROWS-2;y++){ if(t[idx(2,y)]!=="tee") t[idx(2,y)]="path"; }
+ const fac=(x,y,k)=>{ [[0,0],[1,0],[0,1],[1,1]].forEach(o=>set(x+o[0],y+o[1],k)); };
+ fac(35,2,"clubhouse"); fac(35,5,"proshop"); fac(35,8,"restaurant"); fac(35,11,"range"); fac(35,17,"carpark"); fac(35,20,"maintenance"); fac(35,23,"irrigation");
+ S.tiles=t; S.teeMap=teeMap; S.greenMap=greenMap; }
+/* ---------- 5. Canvas rendering: textured tiles, water, trees, buildings ---------- */
+const view={x:0,y:0,zoom:1}; // design camera in tile units (offset) + zoom (tiles fit width)
+function drawTileShape(ctx,x,y,s,type,time,forPlay){
+ const px=x*s, py=y*s, h=hash(x,y), h2=hash(y+13,x+7);
+ // base grass
+ let base="#3e8f47"; if(type==="rough") base=h>.5?"#357a3d":"#2f7038"; if(type==="fairway") base=((x+y)%2===0)?"#69b657":"#5da84e";
+ if(type==="tee") base="#7cc46a"; if(type==="green") base=((x+y)%2===0)?"#35b264":"#2fa657"; if(type==="path") base="#b7a586";
+ if(type==="sand") base="#ecd38f"; if(type==="water") base="#2f7fc4";
+ ctx.fillStyle=base; ctx.fillRect(px,py,s+1,s+1);
+ // mow stripes & texture speckles
+ if(["rough","fairway","tee","green"].includes(type)){ ctx.fillStyle=type==="rough"?"rgba(0,0,0,.10)":"rgba(255,255,255,.07)"; if(x%2===0) ctx.fillRect(px,py,s/2,s+1);
+   ctx.fillStyle="rgba(0,60,20,.18)"; for(let i=0;i<3;i++){ const sx=px+((h*97+i*31)%Math.max(2,s-4)), sy=py+((h2*89+i*23)%Math.max(2,s-4)); ctx.fillRect(sx,sy,Math.max(1,s*.08),Math.max(1,s*.05)); } }
+ if(type==="rough"){ ctx.fillStyle="rgba(20,70,25,.35)"; for(let i=0;i<4;i++) ctx.fillRect(px+((h*61+i*17)%s),py+((h2*53+i*19)%s),1.6,s*.16); }
+ if(type==="sand"){ ctx.fillStyle="rgba(160,120,40,.35)"; ctx.beginPath(); ctx.ellipse(px+s*.5,py+s*.55,s*.34,s*.22,0,0,7); ctx.fill(); ctx.fillStyle="rgba(255,255,255,.35)"; ctx.beginPath(); ctx.ellipse(px+s*.42,py+s*.4,s*.22,s*.1,-.4,0,7); ctx.fill();
+   ctx.fillStyle="rgba(120,85,20,.5)"; for(let i=0;i<5;i++) ctx.fillRect(px+((h*71+i*13)%s),py+((h2*67+i*11)%s),1.5,1.5); }
+ if(type==="water"){ const sh=Math.sin((time||0)/600 + x*.9 + y*.6)*.5+.5; const gr=ctx.createLinearGradient(px,py,px,py+s); gr.addColorStop(0,"#55b7e8"); gr.addColorStop(1,"#1d5f9e"); ctx.fillStyle=gr; ctx.fillRect(px,py,s+1,s+1);
+   ctx.strokeStyle="rgba(255,255,255,"+(.25+sh*.35)+")"; ctx.lineWidth=Math.max(1,s*.05); ctx.beginPath(); ctx.moveTo(px+s*.15,py+s*(.35+sh*.12)); ctx.quadraticCurveTo(px+s*.5,py+s*.25,px+s*.85,py+s*(.38+sh*.1)); ctx.stroke(); }
+ if(type==="path"){ ctx.fillStyle="rgba(90,70,40,.25)"; ctx.fillRect(px,py+s*.42,s+1,s*.16); ctx.fillStyle="rgba(255,255,255,.18)"; for(let i=0;i<3;i++) ctx.fillRect(px+((h*41+i*29)%s),py+((h2*37+i*17)%s),2,1.4); }
+ if(type==="trees"){ ctx.fillStyle="rgba(0,0,0,.28)"; ctx.beginPath(); ctx.ellipse(px+s*.55,py+s*.62,s*.36,s*.24,0,0,7); ctx.fill();
+   const cols=["#1e5c33","#27753f","#2f8a49"]; for(let i=0;i<3;i++){ ctx.fillStyle=cols[i]; ctx.beginPath(); ctx.arc(px+s*(.32+i*.16),py+s*(.42-((i%2)*.08)),s*(.26-i*.03),0,7); ctx.fill(); }
+   ctx.fillStyle="rgba(255,255,255,.14)"; ctx.beginPath(); ctx.arc(px+s*.36,py+s*.3,s*.1,0,7); ctx.fill(); ctx.fillStyle="#5a3d22"; ctx.fillRect(px+s*.47,py+s*.58,s*.07,s*.22); }
+ if(type==="tee"){ ctx.fillStyle="#fff"; ctx.fillRect(px+s*.18,py+s*.62,s*.64,s*.14); ctx.fillStyle="#d4af37"; ctx.beginPath(); ctx.arc(px+s*.5,py+s*.42,s*.13,0,7); ctx.fill(); }
+ if(type==="green"){ ctx.strokeStyle="rgba(255,255,255,.35)"; ctx.beginPath(); ctx.arc(px+s*.5,py+s*.5,s*.34,0,7); ctx.stroke(); }
+ // facilities drawn only from their 2x2 anchor (top-left)
+ if(FACILITY[type]){ const isAnchor = tileAt(x-1,y)!==type && tileAt(x,y-1)!==type; if(isAnchor && !forPlay){ drawBuilding(ctx,px,py,s*2,type); } else if(isAnchor && forPlay){ drawBuilding(ctx,px,py,s*2,type); } return; }
 }
-function hud(){var r=rating();$("money").textContent="$"+state.money.toLocaleString();$("rep").textContent=stars();$("rating").textContent=r.score+"%";$("day").textContent="Day "+state.day;$("designMsg").textContent="Rating "+r.score+"% — Tee: "+(r.counts.tee||0)+", Fairway: "+(r.counts.fairway||0)+", Green: "+(r.counts.green||0)+". "+(r.score>=55?"Ready to open! 🎉":"Keep building to reach 55%.");}
-function buildTools(){
-  var box=$("tools"); box.innerHTML="";
-  tools.forEach(function(t){
-    var b=document.createElement("button"); b.type="button"; b.className="tool"; b.textContent=t[1]; b.setAttribute("aria-pressed",state.tool===t[0]?"true":"false");
-    b.addEventListener("click",function(){state.tool=t[0];buildTools();}); box.appendChild(b);
-  });
-}
-function renderGrid(){
-  var g=$("grid"); g.innerHTML="";
-  state.tiles.forEach(function(t,i){
-    var b=document.createElement("button"); b.type="button"; b.className="tile "+t; b.textContent=emoji[t]||""; b.setAttribute("aria-label","Tile "+(i+1)+": "+t);
-    b.addEventListener("click",function(){
-      if(state.tiles[i]===state.tool)return;
-      var cost=costs[state.tool]; if(state.money<cost){$("designMsg").textContent="Not enough money for that — open for a day in Manage to earn more.";return;}
-      state.money-=cost; state.tiles[i]=state.tool; renderGrid(); hud(); save();
-    });
-    g.appendChild(b);
-  });
-}
-function preset(){
-  state.tiles=Array(70).fill("rough");
-  var set=function(i,t){state.tiles[i]=t;};
-  set(60,"tee"); [61,62,52,53,43,44,34,35,25,26].forEach(function(i){set(i,"fairway");}); set(16,"green");
-  [45,24,15].forEach(function(i){set(i,"sand");}); [8,9,18].forEach(function(i){set(i,"water");});
-  [0,1,20,40,68,69,58].forEach(function(i){set(i,"trees");}); [50,51].forEach(function(i){set(i,"path");});
-  newHole(true); renderGrid(); hud();
-}
-function newHole(silent){
-  var r=rating(); state.hole=240+Math.round((r.counts.fairway||10)*8); state.par=state.hole<260?3:(state.hole<380?4:5);
-  state.ball=0; state.strokes=0; state.over=false; updatePlay();
-  if(!silent)$("playLog").textContent="New hole: "+state.hole+"m, par "+state.par+". Good luck!";
-}
-function updatePlay(){
-  $("holeInfo").textContent="Hole: "+state.hole+"m · Par "+state.par;
-  $("ballPos").textContent=Math.round(state.ball)+"m of "+state.hole+"m ("+Math.max(0,Math.round(state.hole-state.ball))+"m to go)";
-  $("strokes").textContent=state.strokes; $("ballBar").style.width=Math.min(100,state.ball/state.hole*100)+"%";
-}
-function switchTab(name){
-  ["design","manage","play"].forEach(function(n){
-    $("tab-"+n).setAttribute("aria-selected",n===name?"true":"false");
-    $("panel-"+n).classList.toggle("active",n===name);
-  });
-}
-["design","manage","play"].forEach(function(n){$("tab-"+n).addEventListener("click",function(){switchTab(n);});});
-
-$("clearBtn").addEventListener("click",function(){state.tiles=Array(70).fill("rough");renderGrid();hud();save();});
-$("presetBtn").addEventListener("click",function(){preset();save();});
-
-function bindRange(id,out,fmt){
-  var el=$(id); var show=function(){$(out).textContent=fmt(parseInt(el.value,10));}; el.addEventListener("input",show); show();
-}
-bindRange("fee","feeOut",function(v){return "$"+v;});
-bindRange("marketing","mktOut",function(v){return "$"+v;});
-bindRange("staff","staffOut",function(v){return v+" staff ($"+(v*60)+"/day)";});
-
-$("simBtn").addEventListener("click",function(){
-  var r=rating();
-  if(r.score<55){$("log").textContent="⛔ Your course rating is only "+r.score+"%. Build a tee, fairway and green in Design (55%+) before opening.";switchTab("manage");return;}
-  var fee=parseInt($("fee").value,10), mkt=parseInt($("marketing").value,10), staff=parseInt($("staff").value,10);
-  var priceFactor=Math.max(0.25,1.35-fee/110);
-  var visitors=Math.max(0,Math.round((18+r.score*0.9+state.rep*7)*priceFactor+mkt/14+staff*1.5+(Math.random()*14-4)));
-  var revenue=visitors*fee, costs=mkt+staff*60+120, profit=revenue-costs;
-  state.money+=profit; state.day++;
-  if(fee>95&&visitors<35)state.rep=Math.max(1,state.rep-0.4);
-  else if(r.score>=75&&staff>=3)state.rep=Math.min(5,state.rep+0.25);
-  else if(staff===0)state.rep=Math.max(1,state.rep-0.3);
-  $("log").textContent="Day "+(state.day-1)+": "+visitors+" golfers × $"+fee+" = $"+revenue.toLocaleString()+" revenue.\nCosts $"+costs.toLocaleString()+" (marketing, staff, upkeep). Profit: "+(profit>=0?"+":"")+"$"+profit.toLocaleString()+".\n"+(profit>=0?"A good day at the club! 🎉":"A loss today — try a lower fee or more marketing.");
-  hud(); save();
-  if(state.money<0)$("log").textContent+="\n⚠️ You are in debt! Play a good round or reset the game.";
-});
-
-var powerAnim=null, powerVal=60, goingUp=true;
-function animatePower(){
-  var bar=$("powerBar"), range=$("powerRange");
-  powerVal=parseInt(range.value,10);
-  function step(){ powerVal+=goingUp?1.6:-1.6; if(powerVal>=100){powerVal=100;goingUp=false;} if(powerVal<=5){powerVal=5;goingUp=true;} bar.style.width=powerVal+"%"; range.value=Math.round(powerVal); powerAnim=requestAnimationFrame(step); }
-  if(powerAnim)cancelAnimationFrame(powerAnim); powerAnim=requestAnimationFrame(step);
-}
-$("powerRange").addEventListener("input",function(){if(powerAnim)cancelAnimationFrame(powerAnim);$("powerBar").style.width=$("powerRange").value+"%";});
-animatePower();
-
-$("swingBtn").addEventListener("click",function(){
-  if(state.over){newHole();return;}
-  if(powerAnim){cancelAnimationFrame(powerAnim);powerAnim=null;}
-  var club=$("club").value, power=parseInt($("powerRange").value,10)/100;
-  var base=club==="driver"?250:(club==="iron"?150:35);
-  var accuracy=club==="putter"?0.96:(club==="iron"?0.88:0.78);
-  var dist=base*power*(accuracy+Math.random()*(1-accuracy));
-  var remaining=state.hole-state.ball;
-  if(club==="putter"&&remaining<=40)dist=Math.min(dist,remaining*(power>0.25?1:0.6));
-  state.ball+=dist; state.strokes++;
-  if(state.ball>=state.hole-2){
-    state.ball=state.hole; state.over=true;
-    var diff=state.strokes-state.par, prize=diff<0?300:(diff===0?150:0);
-    if(prize)state.money+=prize; if(diff<0)state.rep=Math.min(5,state.rep+0.3);
-    $("playLog").textContent="🏆 Holed in "+state.strokes+" (par "+state.par+")! "+(diff<0?"Under par — you win $"+prize+" prize money!":(diff===0?"Right on par — $"+prize+" prize.":"Over par this time — no prize, try a new hole."));
-  } else {
-    $("playLog").textContent="Shot "+state.strokes+": "+Math.round(dist)+"m with the "+club+". "+Math.round(state.hole-state.ball)+"m to the hole."+(state.ball>state.hole?" You overshot the green!":"");
-    if(state.ball>state.hole)state.ball=state.hole-12;
-  }
-  updatePlay(); hud(); save();
-  setTimeout(animatePower,700);
-});
-$("newHoleBtn").addEventListener("click",function(){newHole();animatePower();});
-
-function save(){try{localStorage.setItem("golfTycoon",JSON.stringify({money:state.money,rep:state.rep,day:state.day,tiles:state.tiles}));}catch(e){}}
-function load(){try{var s=JSON.parse(localStorage.getItem("golfTycoon")||"null");if(s&&s.tiles&&s.tiles.length===70){state.money=s.money;state.rep=s.rep;state.day=s.day;state.tiles=s.tiles;return true;}}catch(e){}return false;}
-$("resetBtn").addEventListener("click",function(){try{localStorage.removeItem("golfTycoon");}catch(e){} state.money=2500;state.rep=3;state.day=1;preset();$("log").textContent="Game reset. $2,500 and a starter course — good luck!";hud();save();});
-
-if(!load())preset();
-buildTools(); renderGrid(); hud(); updatePlay();
-})();
+function drawBuilding(ctx,px,py,size,type){ const w=size, h=size*.82, y0=py+size*.1;
+ ctx.fillStyle="rgba(0,0,0,.30)"; ctx.beginPath(); ctx.ellipse(px+w/2,py+size*.88,w*.46,h*.18,0,0,7); ctx.fill();
+ const walls={clubhouse:"#f2e3b3",proshop:"#cfe8ff",range:"#d9f0c2",restaurant:"#ffd9c2",carpark:"#8d99a6",maintenance:"#d8cfb8",irrigation:"#9fd8ef"}[type]||"#eee";
+ const roofs={clubhouse:"#7a2e2e",proshop:"#24507a",range:"#2e6b34",restaurant:"#8a4a1f",carpark:"#4a5560",maintenance:"#6b5a35",irrigation:"#1d6f9e"}[type]||"#333";
+ if(type==="carpark"){ ctx.fillStyle="#59636e"; ctx.fillRect(px+2,y0,w-4,h); ctx.strokeStyle="#fff"; ctx.lineWidth=1.4; for(let i=1;i<4;i++){ ctx.beginPath(); ctx.moveTo(px+w*i/4,y0+4); ctx.lineTo(px+w*i/4,y0+h-4); ctx.stroke(); } }
+ else if(type==="range"){ ctx.fillStyle="#57a84f"; ctx.fillRect(px+2,y0,w-4,h); ctx.strokeStyle="rgba(255,255,255,.6)"; for(let i=1;i<4;i++){ ctx.beginPath(); ctx.moveTo(px+4,y0+h*i/4); ctx.lineTo(px+w-4,y0+h*i/4); ctx.stroke(); } ctx.fillStyle="#fff"; for(let i=0;i<6;i++) ctx.fillRect(px+6+i*w/6,y0+h*.55,2.4,2.4); }
+ else if(type==="irrigation"){ const gr=ctx.createLinearGradient(px,py,px,py+size); gr.addColorStop(0,"#63c3ec"); gr.addColorStop(1,"#1d6f9e"); ctx.fillStyle=gr; ctx.beginPath(); ctx.ellipse(px+w/2,py+size/2,w*.46,h*.42,0,0,7); ctx.fill(); ctx.strokeStyle="rgba(255,255,255,.7)"; ctx.stroke(); }
+ else { ctx.fillStyle=walls; ctx.fillRect(px+w*.14,y0+h*.32,w*.72,h*.58); ctx.fillStyle=roofs; ctx.beginPath(); ctx.moveTo(px+w*.06,y0+h*.36); ctx.lineTo(px+w/2,y0+h*.05); ctx.lineTo(px+w*.94,y0+h*.36); ctx.closePath(); ctx.fill();
+   ctx.fillStyle="#2b3a2f"; ctx.fillRect(px+w*.43,y0+h*.58,w*.14,h*.32); ctx.fillStyle="#ffe9a8"; ctx.fillRect(px+w*.22,y0+h*.5,w*.12,h*.16); ctx.fillRect(px+w*.66,y0+h*.5,w*.12,h*.16); }
+ ctx.fillStyle="rgba(6,25,12,.88)"; const label=FACILITY[type].label; ctx.font="700 "+Math.max(9,size*.11)+"px system-ui"; const tw=ctx.measureText(label).width; const lx=clamp(px+w/2-tw/2,2,9999); ctx.fillRect(lx-4,py+1,tw+8,Math.max(14,size*.16)); ctx.fillStyle="#f3d27a"; ctx.fillText(label,lx,py+Math.max(11,size*.13)); }
+function drawFlag(ctx,px,py,s,time){ const wave=Math.sin((time||0)/280+px*.02)*s*.06; ctx.strokeStyle="#f5f5f5"; ctx.lineWidth=Math.max(1.4,s*.07); ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(px,py-s*.95); ctx.stroke();
+ ctx.fillStyle="#e63946"; ctx.beginPath(); ctx.moveTo(px,py-s*.95); ctx.quadraticCurveTo(px+s*.28,py-s*.88+wave,px+s*.52,py-s*.82+wave); ctx.quadraticCurveTo(px+s*.28,py-s*.72,px,py-s*.62); ctx.closePath(); ctx.fill();
+ ctx.fillStyle="#111"; ctx.beginPath(); ctx.arc(px,py,s*.09,0,7); ctx.fill(); }
+function drawDesign(time){ const cv=$("designCanvas"), ctx=cv.getContext("2d"); const W=cv.width,H=cv.height; ctx.clearRect(0,0,W,H);
+ const ts=Math.min(W/COLS,H/ROWS)*view.zoom; // tile px on canvas
+ const ox=-view.x*ts, oy=-view.y*ts;
+ ctx.save(); ctx.translate(ox,oy);
+ const x0=clamp(Math.floor(view.x)-1,0,COLS-1), y0=clamp(Math.floor(view.y)-1,0,ROWS-1), x1=clamp(Math.ceil(view.x+W/ts)+1,0,COLS), y1=clamp(Math.ceil(view.y+H/ts)+1,0,ROWS);
+ for(let y=y0;y<y1;y++) for(let x=x0;x<x1;x++){ drawTileShape(ctx,x,y,ts,S.tiles[idx(x,y)],time,false); }
+ // hole numbers, tees & flags
+ ctx.textAlign="center";
+ Object.keys(S.teeMap).forEach(k=>{ const p=xy(+k); ctx.fillStyle="#071a10"; ctx.beginPath(); ctx.arc((p.x+.5)*ts,(p.y+.5)*ts,ts*.34,0,7); ctx.fill(); ctx.fillStyle="#f3d27a"; ctx.font="900 "+ts*.42+"px system-ui"; ctx.fillText(String(S.teeMap[k]),(p.x+.5)*ts,(p.y+.66)*ts); });
+ Object.keys(S.greenMap).forEach(k=>{ const p=xy(+k); drawFlag(ctx,(p.x+.55)*ts,(p.y+.72)*ts,ts,time); ctx.fillStyle="#fff"; ctx.font="900 "+ts*.3+"px system-ui"; ctx.fillText(String(S.greenMap[k]),(p.x+.5)*ts,(p.y+.32)*ts); });
+ // fairway route hint lines tee->green (subtle)
+ ctx.strokeStyle="rgba(255,255,255,.16)"; ctx.setLineDash([6,7]); holePairs().forEach(pr=>{ if(!pr.tee) return; ctx.beginPath(); ctx.moveTo((pr.tee.x+.5)*ts,(pr.tee.y+.5)*ts); ctx.lineTo((pr.green.x+.5)*ts,(pr.green.y+.5)*ts); ctx.stroke(); }); ctx.setLineDash([]);
+ ctx.restore();
+ // vignette
+ const vg=ctx.createRadialGradient(W/2,H/2,H*.35,W/2,H/2,H*.85); vg.addColorStop(0,"rgba(0,0,0,0)"); vg.addColorStop(1,"rgba(0,0,0,.28)"); ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
+ $("zoomChip").textContent="Zoom "+Math.round(view.zoom*100)+"%"; }
+let designRAF=null;
+function designLoop(t){ drawDesign(t||0); if($("panel-design").classList.contains("active")) designRAF=requestAnimationFrame(designLoop); }
+/* ---------- 6. Design input: paint, pan, zoom, tools ---------- */
+function buildTools(){ const box=$("tools"); box.innerHTML=""; TOOLS.forEach(([key,label,desc])=>{ const fac=!!FACILITY[key]; const cost=fac?FACILITY[key].cost:(TILE[key]?TILE[key].cost:0);
+ const b=document.createElement("button"); b.type="button"; b.className="tool"+(fac?" fac":""); b.setAttribute("aria-pressed",S.tool===key?"true":"false"); b.setAttribute("aria-label",label+" tool");
+ b.innerHTML="<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M8 12h8M12 8v8'/></svg><span>"+label+"<small>"+(key==="bulldoze"||key==="pan"||key==="rough"?desc:fmt$(cost)+" · "+desc)+"</small></span>";
+ b.addEventListener("click",()=>{ S.tool=key; $("panBtn").setAttribute("aria-pressed",key==="pan"?"true":"false"); buildTools(); sClick(); save(); }); box.appendChild(b); }); }
+function canAfford(n){ if(S.cash>=n) return true; toast("Not enough cash — advance a week or play a round to earn more."); beep(160,.2,"sawtooth",.06); return false; }
+function clearHoleAt(i){ if(S.teeMap[i]) delete S.teeMap[i]; if(S.greenMap[i]) delete S.greenMap[i]; }
+function paintAt(cx,cy){ const x=Math.floor(cx), y=Math.floor(cy); if(x<0||y<0||x>=COLS||y>=ROWS) return; const i=idx(x,y), tool=S.tool; if(tool==="pan") return;
+ if(tool==="bulldoze"){ // remove facility footprint neighbours too
+   const t=S.tiles[i]; if(FACILITY[t]){ S.tiles=S.tiles.map(v=>v); for(let yy=0;yy<ROWS;yy++)for(let xx=0;xx<COLS;xx++){ /* only 2x2 block touching */ } 
+     // find anchor by scanning 2x2 blocks containing i
+     for(let ay=y-1;ay<=y;ay++)for(let ax=x-1;ax<=x;ax++){ if(ax>=0&&ay>=0&&ax+1<COLS&&ay+1<ROWS&&S.tiles[idx(ax,ay)]===t&&S.tiles[idx(ax+1,ay)]===t&&S.tiles[idx(ax,ay+1)]===t){ [[0,0],[1,0],[0,1],[1,1]].forEach(o=>{ const ii=idx(ax+o[0],ay+o[1]); if(S.tiles[ii]===t){S.tiles[ii]="rough"; clearHoleAt(ii);} }); } } }
+   else { S.tiles[i]="rough"; clearHoleAt(i); } sPaint(); refreshDesignMeta(); save(); return; }
+ if(FACILITY[tool]){ if(x+1>=COLS||y+1>=ROWS){ toast("Facility needs a 2×2 space inside the course."); return; } if(!canAfford(FACILITY[tool].cost)) return;
+   S.cash-=FACILITY[tool].cost; [[0,0],[1,0],[0,1],[1,1]].forEach(o=>{ const ii=idx(x+o[0],y+o[1]); clearHoleAt(ii); S.tiles[ii]=tool; }); toast(FACILITY[tool].label+" built for "+fmt$(FACILITY[tool].cost)); sCash(); vibrate(18); refreshAll(); save(); return; }
+ if(tool==="tee"||tool==="green"){ const map=tool==="tee"?S.teeMap:S.greenMap, other=tool==="tee"?S.greenMap:S.teeMap; const hn=S.holeNo;
+   const existing=Object.keys(map).find(k=>map[k]===hn); if(existing!==undefined){ S.tiles[+existing]="rough"; delete map[existing]; }
+   if(!canAfford(TILE[tool].cost)) { if(existing!==undefined){} refreshDesignMeta(); return; } S.cash-=TILE[tool].cost; clearHoleAt(i); if(other[i]) delete other[i]; S.tiles[i]=tool; map[i]=hn; sPaint(); refreshAll(); save(); return; }
+ if(S.tiles[i]===tool) return; const cost=TILE[tool]?TILE[tool].cost:0; if(!canAfford(cost)) return; S.cash-=cost; if(FACILITY[S.tiles[i]]){ /* painting over one facility tile clears whole block via bulldoze path */ }
+ clearHoleAt(i); S.tiles[i]=tool; sPaint(); refreshDesignMeta(); save(); }
+function canvasTilePos(cv,ev){ const r=cv.getBoundingClientRect(); const sx=cv.width/r.width, sy=cv.height/r.height; const px=(ev.clientX-r.left)*sx, py=(ev.clientY-r.top)*sy; const ts=Math.min(cv.width/COLS,cv.height/ROWS)*view.zoom; return {tx:px/ts+view.x, ty:py/ts+view.y, px,py}; }
+function bindDesignInput(){ const cv=$("designCanvas"); let painting=false,panning=false,last=null,pinchD=0; const ptrs=new Map();
+ cv.addEventListener("pointerdown",e=>{ cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY}); const p=canvasTilePos(cv,e);
+   if(ptrs.size===2){ const a=[...ptrs.values()]; pinchD=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); painting=false; panning=true; return; }
+   if(S.tool==="pan"||e.button===1){ panning=true; last={x:e.clientX,y:e.clientY}; } else { painting=true; paintAt(p.tx,p.ty); } });
+ cv.addEventListener("pointermove",e=>{ const p=canvasTilePos(cv,e); $("coordChip").textContent="Tile "+clamp(Math.floor(p.tx)+1,1,COLS)+", "+clamp(Math.floor(p.ty)+1,1,ROWS)+" · "+fmt$(S.cash);
+   if(ptrs.has(e.pointerId)) ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+   if(ptrs.size===2){ const a=[...ptrs.values()]; const d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); if(pinchD) view.zoom=clamp(view.zoom*(d/pinchD),.55,3.2); pinchD=d; return; }
+   if(panning&&last){ const r=cv.getBoundingClientRect(); const ts=Math.min(cv.width/COLS,cv.height/ROWS)*view.zoom; view.x=clamp(view.x-(e.clientX-last.x)/r.width*cv.width/ts,-2,COLS-4); view.y=clamp(view.y-(e.clientY-last.y)/r.height*cv.height/ts,-2,ROWS-4); last={x:e.clientX,y:e.clientY}; }
+   else if(painting) paintAt(p.tx,p.ty); });
+ const end=e=>{ ptrs.delete(e.pointerId); if(ptrs.size<2) pinchD=0; painting=false; panning=false; last=null; };
+ cv.addEventListener("pointerup",end); cv.addEventListener("pointercancel",end);
+ cv.addEventListener("wheel",e=>{ e.preventDefault(); view.zoom=clamp(view.zoom*(e.deltaY<0?1.12:.89),.55,3.2); },{passive:false});
+ $("zoomIn").addEventListener("click",()=>{view.zoom=clamp(view.zoom*1.2,.55,3.2); sClick();});
+ $("zoomOut").addEventListener("click",()=>{view.zoom=clamp(view.zoom/1.2,.55,3.2); sClick();});
+ $("zoomFit").addEventListener("click",()=>{view.x=0;view.y=0;view.zoom=1; sClick();});
+ $("panBtn").addEventListener("click",()=>{ const on=$("panBtn").getAttribute("aria-pressed")==="true"; S.tool=on?"fairway":"pan"; $("panBtn").setAttribute("aria-pressed",on?"false":"true"); buildTools(); });
+ $("holeSel").addEventListener("change",e=>{ S.holeNo=+e.target.value; toast("Hole No. "+S.holeNo+" selected — place its Tee and Green."); save(); }); }
+/* ---------- 7. Manage: weekly tycoon simulation ---------- */
+function simulateWeek(){ const sc=computeScores();
+ // Pure-ish core (also used by tests): returns P&L breakdown without mutating UI
+ const fee=S.fee, weather=WEATHERS.find(w=>w.n===S.weather)||WEATHERS[0];
+ const priceFactor=clamp(1.55-fee/115,.18,1.35);
+ const demandBase=75 + sc.rating*1.55 + S.reputation*.85 + S.condition*.45 + S.satisfaction*.35 + S.marketing/950 + (hasFac("carpark")?22:0)+(hasFac("range")?14:0);
+ const visitors=Math.max(0,Math.round(demandBase*priceFactor*weather.mult + (Math.random()*36-14)));
+ const greenFees=visitors*fee;
+ const membersIncome=Math.round(S.members*(125 + sc.prestige*.6));
+ const shopIncome=visitors*(hasFac("proshop")?9:2);
+ const foodIncome=visitors*(hasFac("restaurant")?13:3);
+ const revenue=greenFees+membersIncome+shopIncome+foodIncome;
+ const c=sc.counts; const mowTiles=(c.fairway||0)*TILE.fairway.upkeep+(c.green||0)*TILE.green.upkeep+(c.tee||0)*TILE.tee.upkeep+(c.rough||0)*2+(c.path||0)*TILE.path.upkeep;
+ let facUpkeep=0; const seen=new Set(); S.tiles.forEach(t=>{ if(FACILITY[t]&&!seen.has(t)){seen.add(t); facUpkeep+=FACILITY[t].upkeep;} });
+ const wages=S.staff*1450, interest=Math.round(S.loan*.08), costsTotal=Math.round(mowTiles)+facUpkeep+wages+S.marketing+S.maint+interest;
+ const profit=revenue-costsTotal;
+ return {sc,weather,visitors,greenFees,membersIncome,shopIncome,foodIncome,revenue,mow:Math.round(mowTiles),facUpkeep,wages,interest,costsTotal,profit}; }
+function advanceWeek(){ if(S.seasonOver){ toast("Season is over — start a New Game to play again."); return; }
+ if(!isOpen()){ toast("Course not ready: complete the Design checklist (clubhouse + 9 holes) before opening."); switchTab("design"); return; }
+ const r=simulateWeek(); S.cash+=r.profit; S.lastProfit=r.profit;
+ // condition / reputation / satisfaction dynamics
+ const maintNeed=9000 + (r.sc.counts.fairway||0)*22 + S.staff*900;
+ let condDelta=clamp((S.maint-maintNeed)/2600,-7,6) + clamp(S.staff-5,-3,4)*.7 + r.weather.cond + (hasFac("irrigation")?2.2:0)+(hasFac("maintenance")?1.6:0) - (r.visitors>420?2:0);
+ S.condition=clamp(Math.round(S.condition+condDelta),5,100);
+ const valueScore=r.sc.rating*.5 + S.condition*.3 - Math.max(0,S.fee-85)*.28 + (hasFac("restaurant")?4:0)+(hasFac("range")?3:0);
+ S.satisfaction=clamp(Math.round(lerp(S.satisfaction, clamp(valueScore,5,98), .42)),5,100);
+ S.reputation=clamp(Math.round(S.reputation + clamp((S.satisfaction-58)/9,-3.5,3.5) + (r.sc.prestige>62?1:0)),5,100);
+ S.members=clamp(Math.round(S.members + (S.satisfaction-55)/4 + (S.reputation>65?5:-2)),40,650);
+ // random event (45%)
+ let ev=null; if(Math.random()<.48){ const pool=EVENTS.filter(e=>!e.needs||hasFac(e.needs)); ev=pool[Math.floor(Math.random()*pool.length)]; S.cash+=ev.cash; S.condition=clamp(S.condition+ev.cond,5,100); S.reputation=clamp(S.reputation+ev.rep,5,100); }
+ if(S.loan>0){ S.cash-=0; /* interest already in P&L; principal persists until repaid from profit */ if(r.profit>30000){ const repay=Math.min(S.loan,Math.round(r.profit*.25)); S.loan-=repay; S.cash-=repay; } }
+ const finishedWeek=S.week; S.week++; S.cashHist.push(S.cash);
+ S.weather=WEATHERS[Math.floor(Math.random()*WEATHERS.length)].n;
+ const bankrupt=S.cash<0, final=finishedWeek>=FINAL_WEEK;
+ const won=final && S.cash>=TARGET_CASH && S.condition>=70 && S.reputation>=65;
+ if(bankrupt||final) S.seasonOver=true;
+ showReport(r,ev,finishedWeek,won,bankrupt,final);
+ logLine("Week "+finishedWeek+": "+r.visitors+" visitors ("+r.weather.n+") · Revenue "+fmt$(r.revenue)+" · Costs "+fmt$(r.costsTotal)+" · Profit "+(r.profit>=0?"+":"")+fmt$(r.profit)+(ev?" · Event: "+ev.n:""));
+ if(r.profit>=0) sCash(); else beep(200,.2,"sawtooth",.06); vibrate(r.profit>=0?[12]:[40,30,40]);
+ refreshAll(); save();
+ if(bankrupt) showEnd(false,"Bankrupt — cash fell below $0 in Week "+finishedWeek+". The receivers have padlocked the clubhouse.");
+ else if(final&&won){ showEnd(true,"Trophy season! You finished Week 12 with "+fmt$(S.cash)+", Condition "+S.condition+"% and Reputation "+S.reputation+"."); confettiBurst(); sCheer(); }
+ else if(final) showEnd(false,"Season complete — targets missed. Cash "+fmt$(S.cash)+" (need $850k), Condition "+S.condition+"% (need 70), Reputation "+S.reputation+" (need 65)."); }
+function showReport(r,ev,week,won,bankrupt,final){ const rows=[["Green fees ("+r.visitors+" × "+fmt$(S.fee)+")",r.greenFees],["Memberships ("+S.members+")",r.membersIncome],["Pro Shop",r.shopIncome],["Restaurant / Bar",r.foodIncome],
+ ["Grounds staff wages ("+S.staff+")",-r.wages],["Mowing & per-tile maintenance",-r.mow],["Facility upkeep",-r.facUpkeep],["Maintenance spend",-S.maint],["Marketing",-S.marketing],["Loan interest",-r.interest]];
+ if(ev) rows.push(["Event: "+ev.n,ev.cash]);
+ $("reportBody").innerHTML="<p><strong>Week "+week+"</strong> · Weather: "+r.weather.n+" · Rating "+r.sc.rating+" · Prestige "+r.sc.prestige+" · Next week: "+S.weather+"</p>"+
+  rows.map(x=>"<div class='plRow'><span>"+x[0]+"</span><span>"+(x[1]<0?"−":"")+fmt$(Math.abs(x[1]))+"</span></div>").join("")+
+  "<div class='plRow total'><span>Weekly profit</span><span>"+(r.profit>=0?"+":"−")+fmt$(Math.abs(r.profit))+"</span></div>"+
+  "<p>Cash now <strong>"+fmt$(S.cash)+"</strong> · Condition "+S.condition+"% · Reputation "+S.reputation+" · Satisfaction "+S.satisfaction+"%</p>"+
+  (ev?"<p><strong>Event — "+ev.n+":</strong> "+ev.txt+"</p>":"")+(bankrupt?"<p><strong>Bankrupt.</strong> See season result.</p>":final?"<p><strong>Final week complete.</strong></p>":"");
+ $("reportTitle").textContent=won?"Weekly P&L — Trophy Week!":"Weekly P&L — Week "+week; openModal("reportModal"); drawChart(); }
+function logLine(t){ const el=$("log"); el.textContent=(el.textContent?el.textContent+"\n":"")+t; el.scrollTop=el.scrollHeight; }
+function drawChart(){ const cv=$("chartCanvas"); if(!cv) return; const ctx=cv.getContext("2d"), W=cv.width,H=cv.height; ctx.clearRect(0,0,W,H);
+ ctx.strokeStyle="rgba(255,255,255,.14)"; for(let i=1;i<4;i++){ ctx.beginPath(); ctx.moveTo(0,H*i/4); ctx.lineTo(W,H*i/4); ctx.stroke(); }
+ const data=S.cashHist.length?S.cashHist:[S.cash]; const min=Math.min(...data,700000)*.96, max=Math.max(...data,TARGET_CASH)*1.04;
+ const X=i=>data.length<2?W/2:18+i*(W-36)/(data.length-1), Y=v=>H-14-((v-min)/(max-min||1))*(H-28);
+ ctx.strokeStyle="#d4af37"; ctx.setLineDash([5,5]); ctx.beginPath(); ctx.moveTo(0,Y(TARGET_CASH)); ctx.lineTo(W,Y(TARGET_CASH)); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle="#f3d27a"; ctx.fillText("Target $850k",8,Y(TARGET_CASH)-5);
+ ctx.strokeStyle="#57c96b"; ctx.lineWidth=2.6; ctx.beginPath(); data.forEach((v,i)=>i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v))); ctx.stroke();
+ ctx.fillStyle="#57c96b"; data.forEach((v,i)=>{ ctx.beginPath(); ctx.arc(X(i),Y(v),3,0,7); ctx.fill(); }); ctx.fillStyle="#b9cdbd"; ctx.font="11px system-ui"; ctx.fillText(fmt$(data[data.length-1]),W-92,16); }
+/* ---------- 8. Play engine: real holes, aim, hold-release swing, hazards, putting ---------- */
+let play={holeIdx:0,ball:null,strokes:0,scores:[],aim:0,trail:[],anim:null,holding:false,power:0,pdir:1,raf:0,done:false,breakDir:1};
+function ensureRound(){ if(!S.round){ S.round={scores:Array(9).fill(null),started:true}; } play.scores=S.round.scores; }
+function currentPair(){ const pairs=computeScores().pairs; return pairs[clamp(play.holeIdx,0,8)]||pairs[0]; }
+function holeMeters(pair){ return pair&&pair.tee?pair.distM:320; }
+function startHole(idx){ ensureRound(); play.holeIdx=clamp(idx,0,8); const pair=currentPair(); play.done=false; play.strokes=0; play.trail=[];
+ if(pair&&pair.tee){ play.ball={x:pair.tee.x+.5,y:pair.tee.y+.5}; play.aim=Math.atan2(pair.green.y-pair.tee.y,pair.green.x-pair.tee.x); }
+ else { play.ball={x:3.5,y:3.5}; play.aim=0; }
+ play.breakDir=(hash(play.holeIdx,7)>.5?1:-1)*(0.6+hash(play.holeIdx,3)*0.9);
+ updatePlayUI(); drawPlay(0); }
+function ballTile(){ if(!play.ball) return "tee"; return tileAt(Math.floor(play.ball.x),Math.floor(play.ball.y)); }
+function distToPinM(){ const p=currentPair(); if(!p||!p.green||!play.ball) return 0; return Math.hypot(p.green.x+.5-play.ball.x,p.green.y+.5-play.ball.y)*TILE_M; }
+function lieInfo(){ const t=ballTile(), d=distToPinM(); if(d<1.2) return {t:"green",label:"On the green",mult:1}; 
+ const map={tee:{label:"Tee",mult:1},fairway:{label:"Fairway",mult:1},green:{label:"Green",mult:1},rough:{label:"Rough — 75% power",mult:.75},sand:{label:"Sand — 55% power",mult:.55},water:{label:"Water",mult:0},trees:{label:"Trees — deflection risk",mult:.7},path:{label:"Path — free drop lie 90%",mult:.9}};
+ if(FACILITY[t]) return {label:"Facility apron — drop to rough",mult:.7,t:"rough"}; return Object.assign({t},map[t]||{label:t,mult:.85}); }
+function updatePlayUI(){ const p=currentPair(); ensureRound(); const totalPar=computeScores().pairs.reduce((a,x)=>a+(x.par||0),0);
+ const doneScores=play.scores.filter(x=>x!==null); const totalStrokes=doneScores.reduce((a,b)=>a+b,0);
+ $("holeInfo").textContent=p&&p.tee?("Hole "+p.hole+" · Par "+p.par+" · "+p.distM+" m · Tee→Green from your design"):"Hole "+(play.holeIdx+1)+" · Not built yet — place Tee & Green "+(play.holeIdx+1)+" in Design";
+ $("distChip").textContent=Math.round(distToPinM())+" m to pin"; const lie=lieInfo(); $("lieChip").textContent="Lie: "+lie.label; $("playStatus").textContent=play.done?"Holed out!":("Stroke "+(play.strokes+1));
+ $("breakChip").textContent=distToPinM()<32?("Green break: "+(play.breakDir>0?"→ breaks right ":"← breaks left ")+Math.abs(play.breakDir).toFixed(1)):"Green break: reach the green";
+ // scorecard
+ const pairs=computeScores().pairs; let html="<tr><th>Hole</th>"+pairs.map(x=>"<th>"+x.hole+"</th>").join("")+"<th>Total</th></tr>";
+ html+="<tr><td>Par</td>"+pairs.map(x=>"<td>"+(x.par||"—")+"</td>").join("")+"<td>"+totalPar+"</td></tr>";
+ html+="<tr><td>Score</td>"+play.scores.map((s,i)=>{ const par=pairs[i].par; const cls=s===null?"":(s<=par?"scoreGood":"scoreBad"); return "<td class='"+cls+"'>"+(s===null?"–":s)+"</td>"; }).join("")+"<td>"+(doneScores.length?totalStrokes:"–")+"</td></tr>";
+ $("scoreTable").innerHTML=html;
+ const diff=totalStrokes-pairs.slice(0,doneScores.length).reduce((a,x)=>a+(x.par||0),0);
+ $("roundSummary").textContent=doneScores.length?("Round: "+totalStrokes+" strokes · "+(diff===0?"Even par":diff<0?Math.abs(diff)+" under par":diff+" over par")+" · "+doneScores.length+"/9 holes complete."):"Round not started — hole 1 is on the tee.";
+ document.querySelectorAll(".clubBtn").forEach(b=>b.setAttribute("aria-pressed",b.dataset.club===S.club?"true":"false")); }
+function playViewTransform(){ const cv=$("playCanvas"), p=currentPair(); if(!p||!p.tee) return {s:22,ox:20,oy:20};
+ const pad=3.2, minx=Math.min(p.tee.x,p.green.x)-pad, maxx=Math.max(p.tee.x,p.green.x)+pad+1, miny=Math.min(p.tee.y,p.green.y)-pad, maxy=Math.max(p.tee.y,p.green.y)+pad+1;
+ const s=Math.min(cv.width/Math.max(8,(maxx-minx)), cv.height/Math.max(6,(maxy-miny))); return {s,ox:-minx*s+(cv.width-(maxx-minx)*s)/2, oy:-miny*s+(cv.height-(maxy-miny)*s)/2, minx,maxx,miny,maxy}; }
+function drawPlay(time){ const cv=$("playCanvas"); if(!cv||!play.ball) return; const ctx=cv.getContext("2d"), W=cv.width,H=cv.height, tr=playViewTransform(), p=currentPair();
+ ctx.clearRect(0,0,W,H); ctx.save(); ctx.translate(tr.ox,tr.oy);
+ const x0=clamp(Math.floor((0-tr.ox)/tr.s)-1,0,COLS-1), x1=clamp(Math.ceil((W-tr.ox)/tr.s)+1,0,COLS), y0=clamp(Math.floor((0-tr.oy)/tr.s)-1,0,ROWS-1), y1=clamp(Math.ceil((H-tr.oy)/tr.s)+1,0,ROWS);
+ for(let y=y0;y<y1;y++) for(let x=x0;x<x1;x++) drawTileShape(ctx,x,y,tr.s,S.tiles[idx(x,y)],time,true);
+ if(p&&p.tee){ drawFlag(ctx,(p.green.x+.55)*tr.s,(p.green.y+.72)*tr.s,tr.s,time);
+   ctx.fillStyle="#071a10"; ctx.beginPath(); ctx.arc((p.tee.x+.5)*tr.s,(p.tee.y+.5)*tr.s,tr.s*.3,0,7); ctx.fill(); ctx.fillStyle="#f3d27a"; ctx.font="900 "+tr.s*.36+"px system-ui"; ctx.textAlign="center"; ctx.fillText(String(p.hole),(p.tee.x+.5)*tr.s,(p.tee.y+.62)*tr.s); }
+ // aim arrow
+ if(!play.done){ const bx=play.ball.x*tr.s, by=play.ball.y*tr.s, L=tr.s*2.4; ctx.strokeStyle="#f3d27a"; ctx.lineWidth=3; ctx.setLineDash([8,6]); ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx+Math.cos(play.aim)*L,by+Math.sin(play.aim)*L); ctx.stroke(); ctx.setLineDash([]);
+   ctx.fillStyle="#f3d27a"; ctx.beginPath(); const ax=bx+Math.cos(play.aim)*L, ay=by+Math.sin(play.aim)*L; ctx.moveTo(ax,ay); ctx.lineTo(ax-Math.cos(play.aim-.45)*12,ay-Math.sin(play.aim-.45)*12); ctx.lineTo(ax-Math.cos(play.aim+.45)*12,ay-Math.sin(play.aim+.45)*12); ctx.closePath(); ctx.fill(); }
+ // trail
+ if(play.trail.length>1){ ctx.strokeStyle="rgba(255,255,255,.75)"; ctx.lineWidth=2; ctx.beginPath(); play.trail.forEach((pt,i)=>i?ctx.lineTo(pt.x*tr.s,pt.y*tr.s):ctx.moveTo(pt.x*tr.s,pt.y*tr.s)); ctx.stroke(); }
+ // ball with shadow
+ const bx=play.ball.x*tr.s, by=play.ball.y*tr.s; ctx.fillStyle="rgba(0,0,0,.35)"; ctx.beginPath(); ctx.ellipse(bx+4,by+6,7,4,0,0,7); ctx.fill();
+ ctx.fillStyle="#fff"; ctx.beginPath(); ctx.arc(bx,by,6.5,0,7); ctx.fill(); ctx.strokeStyle="#c9c9c9"; ctx.stroke();
+ ctx.restore(); const vg=ctx.createRadialGradient(W/2,H/2,H*.4,W/2,H/2,H); vg.addColorStop(0,"rgba(0,0,0,0)"); vg.addColorStop(1,"rgba(0,0,0,.25)"); ctx.fillStyle=vg; ctx.fillRect(0,0,W,H); }
+let playRAF=null; function playLoop(t){ drawPlay(t||0); if($("panel-play").classList.contains("active")) playRAF=requestAnimationFrame(playLoop); }
+function swingRelease(){ if(!play.holding) return; play.holding=false; cancelAnimationFrame(play.raf); const power=play.power; $("powerOut").textContent="Power "+Math.round(power)+"%"; executeShot(power/100); }
+function executeShot(powerFrac){ if(play.done){ toast("Hole complete — move to the next hole."); return; } const p=currentPair(); if(!p||!p.tee){ toast("Build Tee & Green "+(play.holeIdx+1)+" in Design first."); switchTab("design"); return; }
+ const club=CLUBS[S.club], lie=lieInfo(), isPutt=S.club==="putter"||distToPinM()<24;
+ const sweet=powerFrac>=.45&&powerFrac<=.78; const spray=(powerFrac>.86? (powerFrac-.86)*2.2 : powerFrac<.25?.25:0) + (sweet?0:.08);
+ let distM=club.max*powerFrac*lie.mult*(0.92+Math.random()*.14);
+ if(isPutt) distM=clamp(distM,0,34);
+ let angle=play.aim + (Math.random()-.5)*club.spread*Math.PI/180*(1+spray*7) + (isPutt? play.breakDir*0.012*powerFrac : 0);
+ if(lie.t==="trees"&&Math.random()<.42){ angle+=(Math.random()>.5?1:-1)*(.35+Math.random()*.4); logPlay("Clipped the trees! The ball deflects sideways."); vibrate([30,30,30]); }
+ const start={...play.ball}; const target={x:start.x+Math.cos(angle)*(distM/TILE_M), y:start.y+Math.sin(angle)*(distM/TILE_M)};
+ play.strokes++; sThwack(); vibrate(22); animateBall(start,target,isPutt,()=>resolveLanding(target,isPutt,distM)); }
+function animateBall(a,b,isPutt,done){ const t0=performance.now(), dur=isPutt?650:950; play.trail.push({...a});
+ function step(t){ const k=clamp((t-t0)/dur,0,1), e=1-Math.pow(1-k,2); play.ball={x:lerp(a.x,b.x,e), y:lerp(a.y,b.y,e)}; if(k<1&&k>0) play.trail.push({x:play.ball.x,y:play.ball.y}); drawPlay(t); if(k<1) requestAnimationFrame(step); else done(); } requestAnimationFrame(step); }
+function resolveLanding(target,isPutt,distM){ play.ball={x:clamp(target.x,.4,COLS-.4), y:clamp(target.y,.4,ROWS-.4)};
+ const t=ballTile(), p=currentPair(), dPin=distToPinM();
+ if(t==="water"){ sSplash(); play.strokes++; // penalty
+   play.ball={x:p.tee.x+.5+ (p.green.x-p.tee.x)*.35, y:p.tee.y+.5+(p.green.y-p.tee.y)*.35}; play.trail=[]; logPlay("Splash! Water hazard — 1-stroke penalty and a drop. "+play.strokes+" strokes, "+Math.round(distToPinM())+" m to pin."); vibrate([60,40,60]); updatePlayUI(); return; }
+ if(dPin<=Math.max(9, TILE_M*.55)){ // holed: within ~0.55 tile, easier on putts
+   play.ball={x:p.green.x+.5,y:p.green.y+.5}; play.done=true; play.scores[play.holeIdx]=play.strokes; S.round.scores=play.scores;
+   const diff=play.strokes-p.par; const name=diff<=-2?"Eagle / birdie class!":diff===-1?"Birdie!":diff===0?"Par.":diff===1?"Bogey.":"+"+diff+".";
+   logPlay("Holed out on Hole "+p.hole+" in "+play.strokes+" (Par "+p.par+") — "+name+" Tap Hole › for the next tee."); sCheer(); vibrate([20,40,20,40,60]); confettiBurst(70); save(); updatePlayUI(); return; }
+ const lie=lieInfo(); let msg="Shot "+play.strokes+": "+Math.round(distM)+" m with "+CLUBS[S.club].label+". Lie: "+lie.label+". "+Math.round(dPin)+" m to pin.";
+ if(t==="sand") msg+=" In the bunker — wedge out at reduced power."; if(t==="rough") msg+=" Heavy rough will cost distance."; if(t==="green"||dPin<32) msg+=" On/near the green — putter recommended; watch the break.";
+ logPlay(msg); updatePlayUI(); save(); }
+function logPlay(t){ $("playLog").textContent=t; }
+function bindPlayInput(){ const cv=$("playCanvas"); let aiming=false;
+ const setAim=e=>{ const r=cv.getBoundingClientRect(), tr=playViewTransform(); const px=(e.clientX-r.left)*(cv.width/r.width), py=(e.clientY-r.top)*(cv.height/r.height); const wx=(px-tr.ox)/tr.s, wy=(py-tr.oy)/tr.s; play.aim=Math.atan2(wy-play.ball.y,wx-play.ball.x); };
+ cv.addEventListener("pointerdown",e=>{ aiming=true; cv.setPointerCapture(e.pointerId); setAim(e); });
+ cv.addEventListener("pointermove",e=>{ if(aiming) setAim(e); }); cv.addEventListener("pointerup",()=>aiming=false); cv.addEventListener("pointercancel",()=>aiming=false);
+ document.querySelectorAll(".clubBtn").forEach(b=>b.addEventListener("click",()=>{ S.club=b.dataset.club; sClick(); updatePlayUI(); save(); toast(CLUBS[S.club].label+" selected"); }));
+ const sw=$("swingBtn");
+ const startHold=e=>{ e.preventDefault(); if(play.done) return; play.holding=true; play.power=4; play.pdir=1; const step=()=>{ if(!play.holding) return; play.power+=play.pdir*2.4; if(play.power>=100){play.power=100;play.pdir=-1;} if(play.power<=3){play.power=3;play.pdir=1;} $("powerFill").style.width=play.power+"%"; $("powerOut").textContent="Power "+Math.round(play.power)+"% — release to swing"; play.raf=requestAnimationFrame(step); }; step(); };
+ sw.addEventListener("pointerdown",startHold); sw.addEventListener("pointerup",swingRelease); sw.addEventListener("pointerleave",()=>{ if(play.holding) swingRelease(); }); sw.addEventListener("pointercancel",()=>{play.holding=false;});
+ $("prevHole").addEventListener("click",()=>{ startHole((play.holeIdx+8)%9); sClick(); });
+ $("nextHole").addEventListener("click",()=>{ startHole((play.holeIdx+1)%9); sClick(); });
+ $("resetHoleBtn").addEventListener("click",()=>{ play.scores[play.holeIdx]=null; if(S.round) S.round.scores=play.scores; startHole(play.holeIdx); logPlay("Hole reset. Back on the tee."); save(); });
+ $("newRoundBtn").addEventListener("click",()=>{ S.round={scores:Array(9).fill(null),started:true}; play.scores=S.round.scores; startHole(0); logPlay("New round — Hole 1. Good luck!"); toast("New 9-hole round started"); save(); });
+ $("claimPrizeBtn").addEventListener("click",()=>{ ensureRound(); const pairs=computeScores().pairs; const done=play.scores.map((s,i)=>s===null?null:{s,par:pairs[i].par||4}).filter(Boolean);
+   if(done.length<9){ toast("Finish all 9 holes before collecting the round prize ("+done.length+"/9 done)."); return; }
+   const total=done.reduce((a,x)=>a+x.s,0), par=done.reduce((a,x)=>a+x.par,0), diff=total-par; const prize=diff<0? 18000+Math.abs(diff)*9000 : diff===0?9000: diff<=4?2500:0;
+   if(prize>0){ S.cash+=prize; S.reputation=clamp(S.reputation+(diff<0?3:1),5,100); } S.round={scores:Array(9).fill(null),started:true}; play.scores=S.round.scores;
+   toast(prize?("Round complete: "+total+" vs par "+par+" — prize "+fmt$(prize)+" banked!"):"Round complete: "+total+" vs par "+par+" — no prize this time."); logPlay("Prize banked into Manage. New round ready."); sCash(); confettiBurst(prize?110:30); startHole(0); refreshAll(); save(); }); }
+/* ---------- 9. UI refresh, tabs, modals, confetti ---------- */
+let displayedCash=750000, cashAnim=null;
+function animateCash(){ const el=$("hudCash"); const from=displayedCash,to=S.cash,t0=performance.now(); if(cashAnim) cancelAnimationFrame(cashAnim);
+ function step(t){ const k=clamp((t-t0)/650,0,1); displayedCash=lerp(from,to,1-Math.pow(1-k,3)); el.textContent=fmt$(displayedCash); if(k<1) cashAnim=requestAnimationFrame(step); else displayedCash=to; } cashAnim=requestAnimationFrame(step); }
+function refreshDesignMeta(){ const sc=computeScores(); $("scoreRating").textContent=sc.rating+" / 100"; $("scoreBeauty").textContent=sc.beauty+" / 100"; $("scoreDiff").textContent=sc.difficulty+" / 100"; $("scorePrestige").textContent=sc.prestige+" / 100";
+ $("barRating").style.width=sc.rating+"%"; $("barBeauty").style.width=sc.beauty+"%"; $("barDiff").style.width=sc.difficulty+"%"; $("barPrestige").style.width=sc.prestige+"%";
+ $("designMsg").textContent="Holes complete: "+sc.valid+"/9 · Fairway "+(sc.counts.fairway||0)+" · Water "+(sc.counts.water||0)+" · Sand "+(sc.counts.sand||0)+" · Trees "+(sc.counts.trees||0)+" · Cash after building: "+fmt$(S.cash);
+ $("checklist").innerHTML=validation(sc).map(i=>"<li class='"+(i[1]?"ok":"")+"'><span class='check'>"+(i[1]?"✓":"·")+"</span>"+i[0]+"<small>"+i[2]+"</small></li>").join("");
+ const ht=$("holeTable"); if(ht){ ht.innerHTML="<tr><th>Hole</th>"+sc.pairs.map(p=>"<th>"+p.hole+"</th>").join("")+"<th>Total</th></tr><tr><td>Distance</td>"+sc.pairs.map(p=>"<td>"+(p.tee?p.distM+" m":"—")+"</td>").join("")+"<td>"+sc.pairs.reduce((a,p)=>a+(p.distM||0),0)+" m</td></tr><tr><td>Par</td>"+sc.pairs.map(p=>"<td>"+(p.tee?p.par:"—")+"</td>").join("")+"<td>"+sc.pairs.reduce((a,p)=>a+(p.par||0),0)+"</td></tr>"; } }
+function refreshAll(){ const sc=computeScores(); animateCash();
+ $("hudWeek").textContent="Week "+Math.min(S.week,FINAL_WEEK)+" / 12"; $("hudWeather").textContent="Weather: "+S.weather;
+ $("hudRating").textContent=sc.rating; $("hudPrestige").textContent="Prestige "+sc.prestige;
+ $("hudCondition").textContent=S.condition+"%"; $("hudBeauty").textContent="Beauty "+sc.beauty;
+ $("hudRep").textContent=S.reputation; $("hudDiff").textContent="Difficulty "+sc.difficulty;
+ $("hudSat").textContent=S.satisfaction+"%"; $("hudVisitors").textContent="Members "+S.members;
+ $("hudCashDelta").textContent=S.lastProfit?("Last "+(S.lastProfit>=0?"+":"")+fmt$(S.lastProfit)):""; $("hudCashDelta").className="delta"+(S.lastProfit<0?" neg":"");
+ $("kpiWeeks").textContent=Math.max(0,FINAL_WEEK-Math.min(S.week-1,FINAL_WEEK)); $("kpiMembers").textContent=S.members; $("kpiLastProfit").textContent=fmt$(S.lastProfit);
+ $("mCondition").textContent=S.condition+"%"; $("barCondition").style.width=S.condition+"%";
+ $("mRep").textContent=S.reputation+" / 100"; $("barRep").style.width=S.reputation+"%";
+ $("mSat").textContent=S.satisfaction+"%"; $("barSat").style.width=S.satisfaction+"%";
+ $("fee").value=S.fee; $("maintSpend").value=S.maint; $("marketing").value=S.marketing; $("staffLevel").value=S.staff; syncSliderLabels();
+ $("loanNote").textContent=S.loan>0?("Loan outstanding: "+fmt$(S.loan)+" — interest charged weekly; 25% of strong profits auto-repays principal."):"No loan outstanding.";
+ $("seasonBadge").textContent=S.seasonOver?"Season complete — start a New Game to play again":"Season goal: Week 12 · Cash $850,000+ · Condition 70+ · Reputation 65+ · Week "+Math.min(S.week,12)+" of 12";
+ refreshDesignMeta(); drawChart(); if(play.ball) updatePlayUI(); }
+function syncSliderLabels(){ $("feeOut").textContent=fmt$(+$("fee").value); $("maintOut").textContent=fmt$(+$("maintSpend").value)+" / wk"; $("mktOut").textContent=fmt$(+$("marketing").value)+" / wk"; $("staffOut").textContent=$("staffLevel").value+" staff · "+fmt$(+$("staffLevel").value*1450)+" wages"; }
+function switchTab(name){ ["design","manage","play"].forEach(n=>{ $("tab-"+n).setAttribute("aria-selected",n===name?"true":"false"); $("panel-"+n).classList.toggle("active",n===name); });
+ if(name==="design"){ cancelAnimationFrame(playRAF); designRAF=requestAnimationFrame(designLoop); }
+ if(name==="play"){ cancelAnimationFrame(designRAF); if(!play.ball) startHole(0); else { updatePlayUI(); } playRAF=requestAnimationFrame(playLoop); }
+ if(name==="manage"){ drawChart(); } window.scrollTo({top:0,behavior:"smooth"}); }
+function openModal(id){ $(id).classList.add("open"); } function closeModal(id){ $(id).classList.remove("open"); }
+function showEnd(won,msg){ $("endTitle").textContent=won?"🏆 Trophy — Season Won!":"Season Over"; $("endTitle").style.color=won?"#f3d27a":""; // trophy text, celebration handled by confetti
+ $("endBody").innerHTML="<p>"+msg+"</p><p>Final: Cash <strong>"+fmt$(S.cash)+"</strong> · Condition "+S.condition+"% · Reputation "+S.reputation+" · Satisfaction "+S.satisfaction+"% · Members "+S.members+"</p><p>"+(won?"Your course is a premium destination. Screenshot this one — clubhouse legend status.":"Try: keep fees near $55–$75 early, fund maintenance, build Restaurant + Range, and bank a good played round.")+"</p>"; openModal("endModal"); }
+function confettiBurst(n){ n=n||90; const cv=$("confetti"), ctx=cv.getContext("2d"); cv.width=innerWidth; cv.height=innerHeight; const cols=["#d4af37","#f3d27a","#57c96b","#fff","#55b7e8","#e63946"];
+ const parts=Array.from({length:n},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.35,vx:(Math.random()-.5)*3,vy:2+Math.random()*3.2,r:3+Math.random()*5,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*7,va:(Math.random()-.5)*.25}));
+ const t0=performance.now(); function step(t){ ctx.clearRect(0,0,cv.width,cv.height); parts.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.a+=p.va; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.fillStyle=p.c; ctx.fillRect(-p.r,-p.r*.6,p.r*2,p.r*1.2); ctx.restore(); });
+  if(t-t0<2600) requestAnimationFrame(step); else ctx.clearRect(0,0,cv.width,cv.height); } requestAnimationFrame(step); }
+function newGame(){ S=blankState(); buildStarter(); displayedCash=S.cash; play={holeIdx:0,ball:null,strokes:0,scores:Array(9).fill(null),aim:0,trail:[],anim:null,holding:false,power:0,pdir:1,raf:0,done:false,breakDir:1}; S.round={scores:Array(9).fill(null),started:true}; play.scores=S.round.scores;
+ view.x=0;view.y=0;view.zoom=1; buildTools(); $("holeSel").value="9"; S.holeNo=9; refreshAll(); startHole(0); switchTab("design"); logLine("New season. Starter course restored with $750,000. Goals: $850k, Condition 70+, Reputation 65+ by Week 12."); save(); }
+/* ---------- 10. Init & bindings ---------- */
+function bindUI(){
+ ["design","manage","play"].forEach(n=>$("tab-"+n).addEventListener("click",()=>{ switchTab(n); sClick(); }));
+ [["fee","fee"],["maintSpend","maint"],["marketing","marketing"],["staffLevel","staff"]].forEach(([id,key])=>{ $(id).addEventListener("input",e=>{ S[key]=+e.target.value; syncSliderLabels(); save(); }); });
+ $("simWeekBtn").addEventListener("click",advanceWeek);
+ $("loanBtn").addEventListener("click",()=>{ if(S.loan>0){ toast("A loan is already outstanding ("+fmt$(S.loan)+")."); return; } S.loan=50000; S.cash+=50000; toast("$50,000 loan received — 8% weekly interest in Manage."); sCash(); refreshAll(); save(); });
+ $("presetBtn").addEventListener("click",()=>{ buildStarter(); toast("Starter 9-hole course restored (no charge)."); refreshAll(); if(play.ball) startHole(play.holeIdx); save(); sClick(); });
+ $("clearBtn").addEventListener("click",()=>{ S.tiles=Array(N).fill("rough"); S.teeMap={}; S.greenMap={}; toast("Cleared to rough. Place Tee 1–9 and Green 1–9 to rebuild."); refreshAll(); save(); });
+ $("reportClose").addEventListener("click",()=>closeModal("reportModal"));
+ $("helpBtn").addEventListener("click",()=>openModal("helpModal")); $("helpClose").addEventListener("click",()=>closeModal("helpModal"));
+ $("newGameBtn").addEventListener("click",()=>openModal("confirmModal")); $("confirmNo").addEventListener("click",()=>closeModal("confirmModal"));
+ $("confirmYes").addEventListener("click",()=>{ closeModal("confirmModal"); newGame(); toast("New game started — $750,000 and a fresh starter course."); });
+ $("endRestart").addEventListener("click",()=>{ closeModal("endModal"); newGame(); }); $("endClose").addEventListener("click",()=>closeModal("endModal"));
+ $("soundBtn").addEventListener("click",()=>{ soundOn=!soundOn; S.muted=!soundOn; $("soundBtn").textContent="Sound: "+(soundOn?"On":"Off"); $("soundBtn").setAttribute("aria-pressed",soundOn?"true":"false"); if(soundOn) sClick(); save(); });
+ document.querySelectorAll(".modalBack").forEach(m=>m.addEventListener("click",e=>{ if(e.target===m) m.classList.remove("open"); }));
+ document.addEventListener("keydown",e=>{ if(e.key==="Escape") document.querySelectorAll(".modalBack.open").forEach(m=>m.classList.remove("open"));
+   if(e.target&&/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+   if(e.key==="1") switchTab("design"); if(e.key==="2") switchTab("manage"); if(e.key==="3") switchTab("play");
+   if(e.key==="+"||e.key==="=") view.zoom=clamp(view.zoom*1.15,.55,3.2); if(e.key==="-") view.zoom=clamp(view.zoom/1.15,.55,3.2); if(e.key==="0"){view.x=0;view.y=0;view.zoom=1;} }); }
+(function init(){ const had=load(); if(!had){ S=blankState(); buildStarter(); } if(!S.round) S.round={scores:Array(9).fill(null),started:true};
+ soundOn=!S.muted; $("soundBtn").textContent="Sound: "+(soundOn?"On":"Off"); $("soundBtn").setAttribute("aria-pressed",soundOn?"true":"false");
+ displayedCash=S.cash; ensureRound(); buildTools(); bindDesignInput(); bindPlayInput(); bindUI();
+ $("holeSel").value=String(S.holeNo||9); refreshAll(); startHole(0); designRAF=requestAnimationFrame(designLoop);
+ if(!had) setTimeout(()=>openModal("helpModal"),450);
+ // Expose core sim for automated harness / debugging (no effect on gameplay)
+ window.GCT={computeScores,simulateWeek,holePairs,validation,blankState,buildStarter,getState:()=>S,COLS,ROWS,FACILITY,TILE}; })();
 </script>
 </body>
 </html>
