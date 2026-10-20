@@ -115,21 +115,25 @@ class GameApp {
   }
 
   private frame = (now: number) => {
-    const dt = Math.min(0.05, (now - this.lastFrame) / 1000);
-    this.lastFrame = now;
-    const session = this.session;
-    if (session && this.screen === 'game' && this.tab === 'play') {
-      session.tick(now, dt);
-      const p = session.play;
-      if (p.holding) {
-        const out = this.root.querySelector('#power-out');
-        const fill = this.root.querySelector<HTMLElement>('#power-fill');
-        if (out) out.textContent = `Power ${Math.round(p.power)}% — release in the sweet spot`;
-        if (fill) fill.style.width = `${p.power}%`;
+    try {
+      const dt = Math.min(0.05, (now - this.lastFrame) / 1000);
+      this.lastFrame = now;
+      const session = this.session;
+      if (session && this.screen === 'game' && this.tab === 'play') {
+        session.tick(now, dt);
+        const p = session.play;
+        if (p.holding) {
+          const out = this.root.querySelector('#power-out');
+          const fill = this.root.querySelector<HTMLElement>('#power-fill');
+          if (out) out.textContent = `Power ${Math.round(p.power)}% — release in the sweet spot`;
+          if (fill) fill.style.width = `${p.power}%`;
+        }
       }
+      this.pushView();
+      this.drawMinimap();
+    } catch (err) {
+      console.error(err);
     }
-    this.pushView();
-    this.drawMinimap();
     requestAnimationFrame(this.frame);
   };
 
@@ -673,6 +677,7 @@ class GameApp {
     this.erasing = false;
     this.panning = false;
     this.aiming = false;
+    if (this.view.canvas?.hasPointerCapture?.(e.pointerId)) this.view.canvas.releasePointerCapture(e.pointerId);
     if (s?.play.holding) this.releaseSwing();
   }
 

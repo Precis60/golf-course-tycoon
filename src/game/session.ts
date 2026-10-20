@@ -231,6 +231,7 @@ export class Session {
       putt: plan.putt,
       distM: plan.distM,
     };
+    this.emit();
     return plan.deflected ? 'Clipped the trees. The ball kicks sideways.' : null;
   }
 
